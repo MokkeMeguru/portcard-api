@@ -57,3 +57,6 @@
 
 (defn remove-empty [m]
   (into {} (filter (fn [kv] (-> kv second nil? not)) m)))
+
+(defn remove-nil [seq]
+  (remove nil? seq))

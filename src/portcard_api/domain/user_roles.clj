@@ -24,17 +24,33 @@
 (s/def ::user-role-links (s/* ::user-role-link))
 
 (defn link-category [name]
-  (cond
-    (= name "github") 1
-    (= name "pixiv") 2
-    (= name "niconico_seiga") 3
-    (= name "niconico_douga") 4
-    :else 0))
+  (condp = name
+    "github" 1
+    "pixiv" 2
+    "niconico_seiga" 3
+    "niconico_douga" 4
+    0))
+
+(defn decode-link-category [id]
+  (condp = id
+    1 "github"
+    2 "pixiv"
+    3 "niconico_seiga"
+    4 "niconico_douga"
+    0))
 
 (defn role-category [name]
-  (cond
-    (= name "programming") 1
-    (= name "illust") 2
-    (= name "movie") 3
-    (= name "novel") 4
-    :else 0))
+  (condp = name
+    "programming" 1
+    "illust" 2
+    "movie" 3
+    "novel" 4
+    0))
+
+(defn decode-role-category [id]
+  (condp = id
+    1 "programming"
+    2 "illust"
+    3 "movie"
+    4 "novel"
+    0))

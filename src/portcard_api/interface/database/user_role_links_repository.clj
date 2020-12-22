@@ -64,6 +64,7 @@
   (get-links-by-role-id [{:keys [spec]} role-uid]
     {:pre [(s/valid? ::user-roles-model/link_uid role-uid)]
      :post [(s/valid? ::user-roles-model/user-role-links %)]}
+    (println role-uid)
     (->> (utils/find-by-m spec :user_role_links {:user_role_uid role-uid})
          (mapv #(into {} %))
          (map ->user-role-link)))

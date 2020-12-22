@@ -32,7 +32,7 @@
                                 border-error)]
       (cond
         (-> err not nil?) [nil err]
-        (-> contact nil?)
+        (-> contact empty?)
         (err->> {:function #(user-profiles-contacts-repository/create-contact db (assoc contact-model :user_uid user-id))
                  :error-wrapper errors/database-error}
                 border-error)
@@ -126,9 +126,6 @@
     :contact contact
     :roles roles
     :db db}
-   (fn [param]
-     [param nil])
    check-token
-
    check-user-exist-usecase/check-user-exist
    upsert-all-user-profile))

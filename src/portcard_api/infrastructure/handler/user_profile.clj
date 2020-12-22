@@ -2,7 +2,11 @@
   (:require [clojure.walk :as w]
             [clojure.spec.alpha :as s]
             [portcard-api.usecase.upsert-user-profile :as upsert-user-profile-usecase]
-            [taoensso.timbre :as timbre]))
+            [portcard-api.usecase.get-user-profile :as get-user-profile-usecase]
+            [taoensso.timbre :as timbre]
+            [portcard-api.util :as util]
+            [portcard-api.interface.database.utils :as utils]
+            [portcard-api.domain.user-roles :as user-roles-model]))
 
 (s/def ::display-name string?)
 (s/def ::email string?)
@@ -27,17 +31,56 @@
    :handler (fn [{:keys [parameters headers db]}]
               (let [{:keys [body]} parameters
                     id-token (-> headers w/keywordize-keys :authorization)
-                    {:keys [display-name contact roles]} body]
-                (timbre/info (upsert-user-profile-usecase/upsert-user-profile id-token display-name contact roles db))
-                {:status 201}))})
+                    {:keys [display-name contact roles]} body
+                    [_ err] (upsert-user-profile-usecase/upsert-user-profile id-token display-name contact roles db)]
+                (if (nil? err)
+                  {:status 201}
+                  err)))})
+(defn ->profile-role-link [{:keys [link_category link_blob]}]
+  (let
+   [role-link
+    (utils/remove-empty
+     {:link-category (user-roles-model/decode-link-category link_category)
+      :link-url link_blob})]
+    (if (empty? role-link) nil role-link)))
+
+(defn ->profile-role [{:keys [primary_rank category role-links] :as role-usecase}]
+  (let
+   [role
+    (utils/remove-empty
+     {:role-links (util/remove-nil (map ->profile-role-link role-links))
+      :role-category (user-roles-model/decode-role-category category)
+      :primary-rank primary_rank})]
+    (if (empty? role) nil role)))
+
+(defn ->profile-contact [{:keys [email twitter facebook] :as contact-usecase}]
+  (let [contact (util/remove-empty
+                 {:email email
+                  :twitter twitter
+                  :facebook facebook})]
+    (if (empty? contact) nil contact)))
+
+(defn ->profile [{:keys [display-name icon_blob contact roles]}]
+  (util/remove-empty
+   {:display-name display-name
+    :icon-blob icon_blob
+    :contact (->profile-contact contact)
+    :roles (util/remove-nil (mapv ->profile-role roles))}))
 
 (def get-user-profile
   {:summary "get user profile"
    :parameters {:path {:user-id string?}}
    :responses {201 {:body
-                    (s/keys :req-un [::display-name] :opt-un [::contact ::roles])}}
-   :handler (fn [{:keys [parameters]}]
-              {:status 201})})
+                    (s/keys :req-un [::display-name] :opt-un [::contact ::roles ::icon-blob])}}
+   :handler (fn [{:keys [parameters db]}]
+              (let [{{:keys [user-id]} :path} parameters
+                    [profile err] (get-user-profile-usecase/get-user-profile user-id db)]
+                (println (keys profile))
+                (println (->profile profile))
+                (if (nil? err)
+                  {:status 201
+                   :body (->profile profile)}
+                  err)))})
 
 ;; -> save display name  user-repository
 ;; -> save contact       update contect-repository

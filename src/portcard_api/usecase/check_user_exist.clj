@@ -8,12 +8,11 @@
 
 (defn check-user-exist [{:keys [db user-id] :as m}]
   (println "userid is :" m)
-  (let [[user-exist err] (err->>
-                          {:function #(-> (users-repository/get-user db :uid user-id)
-                                          user-already-exist?)
-                           :error-wrapper errors/database-error}
-                          border-error)]
+  (let [[user err] (err->>
+                    {:function #(users-repository/get-user db :uid user-id)
+                     :error-wrapper errors/database-error}
+                    border-error)]
     (cond
       (not (nil? err)) [nil err]
-      (not user-exist) [nil errors/user-not-found]
-      :else [m nil])))
+      (not (user-already-exist? user)) [nil errors/user-not-found]
+      :else [(assoc m :user user) nil])))
