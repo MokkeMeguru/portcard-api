@@ -12,4 +12,4 @@
 
 (s/def ::user-topic (s/keys :req-un [::uid ::title ::created_at ::image_blob] :opt-un [::updated_at  ::description]))
 (s/def ::creation-user-topic (s/keys :req-un [::uid ::user_uid ::title ::image_blob] :opt-un [::description]))
-(s/def ::user-topics (s/* ::user_topic))
+(s/def ::user-topics (s/* ::user-topic))

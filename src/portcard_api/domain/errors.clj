@@ -22,9 +22,5 @@
 (def expired-id-token {:status 400 :body {:code 1701 :message "the firebase token is expired"}})
 (def invalid-id-token {:status 400 :body {:code 1702 :message "the firebase token is invalid"}})
 
-(def sql-raised-error {:status 500 :body {:code 1802 :message "error caused from sql query"}})
-
-(defn sql-error [params]
-  (if (= params ::s/invalid)
-    [nil sql-raised-error]
-    [params nil]))
+(defn database-error [message]
+  {:status 500 :body {:code 1802 :message (str "error caused from sql query : " message)}})

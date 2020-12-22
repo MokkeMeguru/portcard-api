@@ -59,9 +59,10 @@
       (jdbc/execute-one! conn sql-command-list)
       (jdbc/execute! conn sql-command-list))))
 
+(def insert-option  {:return-keys true :builder-fn rs/as-unqualified-lower-maps})
 (defn insert! [spec table-key m]
   (with-open [conn (jdbc/get-connection (:datasource spec))]
-    (njs/insert! conn table-key m {:return-keys true :builder-fn rs/as-unqualified-lower-maps})))
+    (njs/insert! conn table-key m insert-option)))
 
 (defn update! [spec table-key m idm]
   (with-open [conn (jdbc/get-connection (:datasource spec))]

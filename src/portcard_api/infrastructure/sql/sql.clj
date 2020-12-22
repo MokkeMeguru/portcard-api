@@ -27,7 +27,6 @@
   (reify QueryExecutionListener
     (beforeQuery [_ _ _])
     (afterQuery [_ exec-info query-infos]
-      (timbre/info "query accepted")
       (let [elapsed (.getElapsedTime exec-info)
             queries (mapv logged-query query-infos)]
         (if (= (count queries) 1)
