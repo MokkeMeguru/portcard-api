@@ -22,3 +22,19 @@
 (s/def ::user-role-link (s/keys :req-un [::link_uid ::link_category ::link_blob ::created_at] :opt-un [::updated_at]))
 (s/def ::creation-user-role-link (s/keys :req-un [::uid ::user_role_uid ::link_category ::link_blob]))
 (s/def ::user-role-links (s/* ::user-role-link))
+
+(defn link-category [name]
+  (cond
+    (= name "github") 1
+    (= name "pixiv") 2
+    (= name "niconico_seiga") 3
+    (= name "niconico_douga") 4
+    :else 0))
+
+(defn role-category [name]
+  (cond
+    (= name "programming") 1
+    (= name "illust") 2
+    (= name "movie") 3
+    (= name "novel") 4
+    :else 0))

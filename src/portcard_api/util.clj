@@ -54,3 +54,6 @@
 
 ;; (border-error #(sample-fn 2 "Hello"))
 ;; (border-error sample-fn 2 "Hello")
+
+(defn remove-empty [m]
+  (into {} (filter (fn [kv] (-> kv second nil? not)) m)))

@@ -14,16 +14,12 @@
 
 (defn signin [id-token db]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]
-    (if (= :succcess result)
+    (if (= :success result)
       (let [[user err] (err->>
                         {:function #(users-repository/get-user db :uid user-id)
                          :error-wrapper errors/database-error}
                         border-error
                         user-not-found)]
-        (println user)
-        (println "check boarder: " (border-error {:function #(users-repository/get-user db :uid user-id)
-                                                  :error-wrapper errors/database-error}))
-        (println "base :" (users-repository/get-user db :uid user-id))
         (if (nil? err)
           {:status 201
            :body {:uname (:uname user)}}

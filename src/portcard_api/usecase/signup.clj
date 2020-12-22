@@ -32,7 +32,7 @@
 
 (defn signup [uname id-token db]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]
-    (if (= :succcess result)
+    (if (= :success result)
       (let [[_ name-err] (err->>
                           (users-repository/get-user db :uid user-id)
                           errors/sql-error

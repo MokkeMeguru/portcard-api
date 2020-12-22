@@ -31,7 +31,7 @@
 
 (defn safe-decode-token [id-token]
   (try
-    {:result :succcess
+    {:result :success
      :user-id (decode-token id-token)
      :cause nil}
     (catch Exception e
