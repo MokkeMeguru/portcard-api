@@ -1,0 +1,20 @@
+{:portcard-api.infrastructure.env/env {}
+ :portcard-api.infrastructure.firebase.firebase/firebase
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.sql.migrate/migrate
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.sql.sql/sql
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :firebase #ig/ref :portcard-api.infrastructure.firebase.firebase/firebase
+  :migrate #ig/ref :portcard-api.infrastructure.sql.migrate/migrate}
+
+ :portcard-api.infrastructure.router.core/router
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :db #ig/ref :portcard-api.infrastructure.sql.sql/sql}
+
+ :portcard-api.server/server
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :router #ig/ref :portcard-api.infrastructure.router.core/router
+  :port 3000}}

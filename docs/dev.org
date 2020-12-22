@@ -1,0 +1,55 @@
+#+TITLE: Dev
+* initialize
+lein new app picpage
+* for library version up
+~/.lein/profiles.clj で、次のように lein-ancient を追加する
+#+begin_src clojrue
+{:user {:plugins [[lein-ancient "0.6.15"]]}}
+#+end_src
+プロジェクト内で lein-ancient を行う
+#+begin_example
+lein ancient                                                        master
+Retrieving com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.6.6/jackson-dataformat-cbor-2.6.6.jar from central
+Retrieving com/fasterxml/jackson/core/jackson-databind/2.6.6/jackson-databind-2.6.6.jar from central
+Retrieving com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar from central
+Retrieving com/fasterxml/jackson/core/jackson-core/2.6.6/jackson-core-2.6.6.jar from central
+[ring/ring-jetty-adapter "1.8.2"] is available but we use "1.7.1"
+[com.fasterxml.jackson.core/jackson-core "2.11.3"] is available but we use "2.10.0"
+[cheshire "5.10.0"] is available but we use "5.9.0"
+[environ "1.2.0"] is available but we use "1.1.0"
+[integrant "0.8.0"] is available but we use "0.7.0"
+[integrant/repl "0.3.2"] is available but we use "0.3.1"
+[com.taoensso/timbre "5.1.0"] is available but we use "4.10.0"
+[com.fzakaria/slf4j-timbre "0.3.20"] is available but we use "0.3.14"
+[honeysql "1.0.444"] is available but we use "0.9.8"
+[seancorfield/next.jdbc "1.1.610"] is available but we use "1.0.9"
+[hikari-cp "2.13.0"] is available but we use "2.9.0"
+[org.postgresql/postgresql "42.2.18"] is available but we use "42.2.5"
+[camel-snake-kebab "0.4.2"] is available but we use "0.4.0"
+/r/m/m/P/G/picpage ❯❯❯ 
+#+end_example
+
+これに合わせてバージョンを上げる。
+* 始め方
+- docker-compose build
+- docker-compose run --service-port repl
+- lein repl or lein run
+このとき、 project.clj を
+#+begin_src clojure
+ :repl-options
+  {:host "0.0.0.0"
+   :port 39998}
+#+end_src
+としているので、 39998 port へ repl の出口が設定される。
+そのため、docker を通した接続が可能になる
+* ちょっと良くないところ
+** alias を貼り直すことは出来ない
+(require [hogehoge :as hoge]) としたあとに (require [hogebar :as hoge]) とは出来ない。こうなったら、 repl を立ち上げ直す必要がある。
+* docker-compose の db connection port について
+docker-compose 内部でネットワークを作っているので、 export しているポートではなく,  本来繋ぐポートを指定する。
+例えば 5565:5432 で postgresql の port を開けていても、内部同士の通信は 5432 で行う
+
+local -> docker's psql
+#+begin_src shell
+psql -h 127.0.0.1 -p 5565 -U meguru picpage_db
+#+end_src

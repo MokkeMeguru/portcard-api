@@ -1,0 +1,18 @@
+* project setup
+** server build
+lein new app server-example
+** client build
+lein new re-frame client-example +cider +test +10x +garden
+** firebase project build (for authentification)
+firebase より project の作成
+(analytics は任意)
+* Add Firebase into client
+index.html に以下行を追加 (firebase より指示)
+*
+** node module の追加
+npm install --save firebase
+npm install --save react-firebaseui
+**
+
+* server run
+export GOOGLE_APPLICATION_CREDENTIALS="resources/secrets.json"
