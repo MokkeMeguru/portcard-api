@@ -10,9 +10,13 @@
   :firebase #ig/ref :portcard-api.infrastructure.firebase.firebase/firebase
   :migrate #ig/ref :portcard-api.infrastructure.sql.migrate/migrate}
 
+ :portcard-api.infrastructure.image-db.image-db/image-db
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
  :portcard-api.infrastructure.router.core/router
  {:env #ig/ref :portcard-api.infrastructure.env/env
-  :db #ig/ref :portcard-api.infrastructure.sql.sql/sql}
+  :db #ig/ref :portcard-api.infrastructure.sql.sql/sql
+  :image-db #ig/ref :portcard-api.infrastructure.image-db.image-db/image-db}
 
  :portcard-api.server/server
  {:env #ig/ref :portcard-api.infrastructure.env/env

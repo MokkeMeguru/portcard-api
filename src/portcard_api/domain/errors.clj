@@ -24,3 +24,6 @@
 
 (defn database-error [message]
   {:status 500 :body {:code 1802 :message (str "error caused from sql query : " message)}})
+
+(def icon-not-found {:status 400 :body {:code 1801 :message "the icon is not found"}})
+(def icon-save-failed {:status 400 :body {:code 1802 :message "the icon image saving failed"}})

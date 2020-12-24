@@ -7,7 +7,6 @@
   (not (empty? user)))
 
 (defn check-user-exist [{:keys [db user-id] :as m}]
-  (println "userid is :" m)
   (let [[user err] (err->>
                     {:function #(users-repository/get-user db :uid user-id)
                      :error-wrapper errors/database-error}

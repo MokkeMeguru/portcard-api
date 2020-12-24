@@ -51,7 +51,11 @@
             :handler (fn [_]
                        {:status 200
                         :headers {"Content-Type" "image/png"}
-                        :body (io/input-stream (io/resource "icon.png"))})}}]]
+                        :body
+                        (io/input-stream (java.net.URL. "https://avatars0.githubusercontent.com/u/30849444?s=460&u=75bde9345fbaf950cceec1d8fc4dc68eff83507a&v=4"))
+
+                        ;;(io/input-stream (io/file "resources/icon.png"))
+                        })}}]]
 
    ["/math"
     {:swagger {:tags ["samples"]}}
@@ -69,3 +73,9 @@
              :handler (fn [{{{:keys [x y]} :body} :parameters}]
                         {:status 200
                          :body {:total (+ x y)}})}}]]])
+
+;; (.isFile (io/file "resources/icon.png"))
+
+;; (.isFile (io/file (.getAbsolutePath (io/file "resources/icon.png"))))
+;; (.isDirectory (io/file "resources"))
+;; (seq (.list (io/file "resources")))

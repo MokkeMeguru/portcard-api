@@ -29,9 +29,9 @@
    [portcard-api.infrastructure.router.sample :refer [sample-router]]
    [portcard-api.infrastructure.router.registration :refer [registration-router]]
    [portcard-api.infrastructure.router.user-profile :refer [user-profile-router]]
-   [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db]]))
+   [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db wrap-image-db]]))
 
-(defn app [env db]
+(defn app [env db image-db]
   (ring/ring-handler
    (ring/router
     [["/swagger.json"
@@ -72,14 +72,16 @@
              coercion/coerce-request-middleware
                            ;; multipart
              multipart/multipart-middleware
-             [wrap-db db]]}})
+             [wrap-db db]
+             [wrap-image-db image-db]]}})
    (ring/routes
     (swagger-ui/create-swagger-ui-handler {:path "/api"})
     (ring/create-default-handler))
    {:middleware [my-wrap-cors
                  wrap-with-logger]}))
 
-(defmethod ig/init-key ::router [_ {:keys [env db]}]
+(defmethod ig/init-key ::router [_ {:keys [env db image-db]}]
   (timbre/info "router got: env" env)
   (timbre/info "router got: db" db)
-  (app env db))
+  (timbre/info "router got: image-db" image-db)
+  (app env db image-db))

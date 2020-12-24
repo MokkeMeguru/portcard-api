@@ -5,7 +5,8 @@
             [portcard-api.domain.users :as user-model]
             [next.jdbc.result-set :as rs]
             [portcard-api.domain.base :as base-model]
-            [orchestra.spec.test :as st]))
+            [orchestra.spec.test :as st]
+            [taoensso.timbre :as timbre]))
 
 ;; define protocol
 (defprotocol UserProfilesIcons

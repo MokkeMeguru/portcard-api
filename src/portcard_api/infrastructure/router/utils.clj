@@ -5,6 +5,10 @@
   (fn [request]
     (handler (assoc request :db db))))
 
+(defn wrap-image-db [handler image-db]
+  (fn [request]
+    (handler (assoc request :image-db image-db))))
+
 (defn my-wrap-cors
   "Wrap the server response in a Control-Allow-Origin Header to
   allow connections from the web app."
