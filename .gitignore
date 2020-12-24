@@ -12,3 +12,4 @@ pom.xml.asc
 .hgignore
 .hg/
 resources/secret.json
+/image-db/icons/*.png
