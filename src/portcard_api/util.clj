@@ -61,8 +61,8 @@
 (defn remove-nil [seq]
   (remove nil? seq))
 
-(def chars
+(def chars-list
   (map char (concat (range 48 58) (range 66 92) (range 97 123))))
 
 (defn rand-str [len]
-  (apply str (take len (repeatedly #(nth chars (rand (count chars)))))))
+  (apply str (take len (repeatedly #(nth chars-list (rand (count chars-list)))))))

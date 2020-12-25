@@ -35,11 +35,9 @@
     (if (= :success result)
       (let [[_ name-err] (err->>
                           (users-repository/get-user db :uid user-id)
-                          errors/sql-error
                           user-name-is-used?)
             [_ account-err] (err->>
                              (users-repository/get-user db :uname uname)
-                             errors/sql-error
                              user-already-exist?)]
         (cond
           (not (nil? account-err)) account-err
