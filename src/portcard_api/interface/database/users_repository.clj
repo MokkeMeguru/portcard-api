@@ -124,12 +124,15 @@
 
 ;; ;; test
 ;; (st/instrument)
+
+
 ;; (defonce inst
 ;;   (portcard-api.infrastructure.sql.sql/->Boundary
 ;;    {:datasource
 ;;     (portcard-api.infrastructure.sql.sql/wrap-logger
 ;;      (hikari-cp.core/make-datasource
 ;;       {:jdbc-url (environ.core/env :database-url)}))}))
+
 ;; (get-users inst)
 
 ;; (satisfies? Users inst)

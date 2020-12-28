@@ -7,12 +7,12 @@
    [clojure.spec.alpha :as s]))
 
 (defn user-name-is-used? [user]
-  (if (= :empty-user (first user))
+  (if (empty?  user)
     [user nil]
     [nil errors/duplicate-user-name]))
 
 (defn user-already-exist? [user]
-  (if (= :empty-user (first user))
+  (if (empty? user)
     [user nil]
     [nil errors/duplicate-account]))
 
@@ -22,8 +22,7 @@
               :display_name uname}]
     (try
       (let [result (users-repository/create-user db user)]
-        (if (and (not (= ::s/invalid result))
-                 (= (:uid (second result)) user-id))
+        (if (= (:uid result) user-id)
           {:status 201
            :body {:uname uname}}
           errors/user-creation-error))
@@ -35,10 +34,10 @@
     (if (= :success result)
       (let [[_ name-err] (err->>
                           (users-repository/get-user db :uid user-id)
-                          user-name-is-used?)
+                          user-already-exist?)
             [_ account-err] (err->>
                              (users-repository/get-user db :uname uname)
-                             user-already-exist?)]
+                             user-name-is-used?)]
         (cond
           (not (nil? account-err)) account-err
           (not (nil? name-err)) name-err
