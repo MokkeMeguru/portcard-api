@@ -14,10 +14,10 @@
 (s/def ::facebook string?)
 (s/def ::contact (s/keys :opt-un [::email ::twitter ::facebook]))
 (s/def ::role-category string?)
-(s/def ::link-category string?)
+(s/def ::link-category-name string?)
 (s/def ::link-url string?)
 (s/def ::primary-rank int?)
-(s/def ::role-link (s/keys :req-un [::link-category ::link-url]))
+(s/def ::role-link (s/keys :req-un [::link-category-name ::link-url]))
 (s/def ::role-links (s/* ::role-link))
 (s/def ::role (s/keys :req-un [::role-category ::primary-rank] :opt-un [::role-links]))
 (s/def ::roles (s/* ::role))
@@ -36,11 +36,13 @@
                 (if (nil? err)
                   {:status 201}
                   err)))})
-(defn ->profile-role-link [{:keys [link_category link_blob]}]
+
+(defn ->profile-role-link [{:keys [link_category_name link_blob]}]
+
   (let
    [role-link
     (utils/remove-empty
-     {:link-category (user-roles-model/decode-link-category link_category)
+     {:link-category-name link_category_name ;; (user-roles-model/decode-link-category link_category)
       :link-url link_blob})]
     (if (empty? role-link) nil role-link)))
 
@@ -75,8 +77,6 @@
    :handler (fn [{:keys [parameters db]}]
               (let [{{:keys [user-id]} :path} parameters
                     [profile err] (get-user-profile-usecase/get-user-profile user-id db)]
-                (println (keys profile))
-                (println (->profile profile))
                 (if (nil? err)
                   {:status 201
                    :body (->profile profile)}

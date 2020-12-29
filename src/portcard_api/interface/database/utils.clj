@@ -100,4 +100,5 @@
 ;;       (:next.jdbc/update-count (jdbc/execute-one! conn upsert-vec)))))
 
 (defn remove-empty [m]
-  (into {} (filter (fn [kv] (-> kv second nil? not)) m)))
+  (into {} (filter (fn [kv] (and (-> kv second nil? not)
+                                 (-> kv second (not= "")))) m)))

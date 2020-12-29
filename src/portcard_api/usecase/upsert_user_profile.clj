@@ -43,10 +43,10 @@
 
 (defn insert-role-link [role-uuid role-link db]
   (let [role-link-uuid (java.util.UUID/randomUUID)
-        {:keys [link-category link-url]} role-link
+        {:keys [link-category-name link-url]} role-link
         role-link-model {:user_role_uid role-uuid
                          :uid role-link-uuid
-                         :link_category (user-roles-model/link-category link-category)
+                         :link_category_name link-category-name ;; (user-roles-model/link-category link-category)
                          :link_blob link-url}]
     (err->> {:function #(user-role-links-repository/create-links db role-link-model)
              :error-wrapper errors/database-error}

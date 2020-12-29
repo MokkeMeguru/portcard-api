@@ -16,28 +16,29 @@
 
 (s/def ::link_uid uuid?)
 (s/def ::user_role_uid uuid?)
-(s/def ::link_category int?)
+;; (s/def ::link_category int?)
+(s/def ::link_category_name string?)
 (s/def ::link_blob string?)
 
-(s/def ::user-role-link (s/keys :req-un [::link_uid ::link_category ::link_blob ::created_at] :opt-un [::updated_at]))
-(s/def ::creation-user-role-link (s/keys :req-un [::uid ::user_role_uid ::link_category ::link_blob]))
+(s/def ::user-role-link (s/keys :req-un [::link_uid ::link_category_name ::link_blob ::created_at] :opt-un [::updated_at]))
+(s/def ::creation-user-role-link (s/keys :req-un [::uid ::user_role_uid ::link_category_name ::link_blob]))
 (s/def ::user-role-links (s/* ::user-role-link))
 
-(defn link-category [name]
-  (condp = name
-    "github" 1
-    "pixiv" 2
-    "niconico_seiga" 3
-    "niconico_douga" 4
-    0))
+;; (defn link-category [name]
+;;   (condp = name
+;;     "github" 1
+;;     "pixiv" 2
+;;     "niconico_seiga" 3
+;;     "niconico_douga" 4
+;;     0))
 
-(defn decode-link-category [id]
-  (condp = id
-    1 "github"
-    2 "pixiv"
-    3 "niconico_seiga"
-    4 "niconico_douga"
-    0))
+;; (defn decode-link-category [id]
+;;   (condp = id
+;;     1 "github"
+;;     2 "pixiv"
+;;     3 "niconico_seiga"
+;;     4 "niconico_douga"
+;;     0))
 
 (defn role-category [name]
   (condp = name

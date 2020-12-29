@@ -23,12 +23,12 @@
 
 
 (defn ->user-role-link [user-role-link-db]
-  (let [{:keys [uid link_category link_blob created_at updated_at]} user-role-link-db
+  (let [{:keys [uid link_category_name link_blob created_at updated_at]} user-role-link-db
         created_at (utils/sql-to-long created_at)
         updated_at (if (-> updated_at nil?) nil (utils/sql-to-long updated_at))]
     (utils/remove-empty
      {:link_uid uid
-      :link_category link_category
+      :link_category_name link_category_name
       :link_blob link_blob
       :created_at created_at
       :updated_at updated_at})))
@@ -89,17 +89,18 @@
 ;;                {:datasource (hikari-cp.core/make-datasource
 ;;                              {:jdbc-url (environ.core/env :database-url)})}))
 ;; (def sample-uuid2 (java.util.UUID/fromString "2667ca70-d17b-4f2a-818c-b861b14bcc35"))
-;; (def sample-uuid (java.util.UUID/fromString "2667ca70-d17b-4f2a-818c-b861b14bcc34"))
+;; (def sample-uuid (java.util.UUID/fromString "f4c1ab06-b103-4768-a64d-7c49592e43ec"))
 ;; (def sample-uid "b3mXXLoTA1QeLb1UoiknB3eerwn1")
 
 ;; (def sample-role-link
 ;;   {:user_role_uid sample-uuid
 ;;    :uid sample-uuid2
-;;    :link_category 0
+;;    :link_category_name "Github"
 ;;    :link_blob "https://github.com/MokkeMeguru"})
 
 ;; (create-links inst sample-role-link)
-;; (get-links inst)
-;; (get-links-by-role-id inst sample-uuid)
+(get-links inst)
+
+(get-links-by-role-id inst sample-uuid)
 ;; (delete-links inst sample-uuid)
-;; (st/unstrument)
+(st/unstrument)
