@@ -46,19 +46,25 @@
       [(assoc m :icon_blob (:icon_blob icon)) nil]
       [nil err])))
 
-(defn get-user-display-name [{:keys [db uname] :as m}]
+(defn get-user-display-name [{:keys [db user] :as m}]
+  [(assoc m :display-name (:display_name user)) nil])
+
+(defn user-exist? [{:keys [db uname] :as m}]
   (let [[user err] (err->> {:function #(users-repository/get-user db :uname uname)
                             :error-wrapper errors/database-error}
                            border-error)]
-    (if (nil? err)
-      [(-> m
-           (assoc :display-name (:display_name user))
-           (assoc :user-id (:uid user))) nil]
-      [nil err])))
+    (println user)
+    (cond
+      (not (nil? err)) [nil err]
+      (empty? user) [nil errors/user-not-found]
+      :else
+      [(-> m (assoc :user user)
+           (assoc :user-id (:uid user))) nil])))
 
 (defn get-user-profile [uname db]
   (err->>
    {:uname uname :db db}
+   user-exist?
    get-user-display-name
    get-user-icon-blob
    get-user-contact
