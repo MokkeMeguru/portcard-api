@@ -99,8 +99,8 @@
 ;;    :link_blob "https://github.com/MokkeMeguru"})
 
 ;; (create-links inst sample-role-link)
-(get-links inst)
+;; (get-links inst)
 
-(get-links-by-role-id inst sample-uuid)
-;; (delete-links inst sample-uuid)
-(st/unstrument)
+;; (get-links-by-role-id inst sample-uuid)
+;; ;; (delete-links inst sample-uuid)
+;; (st/unstrument)
