@@ -14,3 +14,4 @@ pom.xml.asc
 resources/secret.json
 /image-db/icons/*.png
 dev-migration.log
+resources/_secret.txt

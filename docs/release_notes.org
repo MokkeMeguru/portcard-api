@@ -1,0 +1,50 @@
+#+TITLE: Release Memo
+* 0th Release Memo
+** アプリの初期化
+#+BEGIN_SRC shell
+lein new app <project-name>
+#+END_SRC
+** 追加したライブラリ
+
+** ディレクトリ構成
+- docs ... 開発ドキュメント, release note
+- containers ... docker ファイル関連
+- image-db ... ローカル画像ファイルフォルダ (google cloud storage へ以降予定)
+- resources ... 素材
+  - config.edn ... 環境設定(静的)
+  - migrations ... migration ファイル
+  - secret.json.gpg ... firebase のセキュリティキー (暗号化)
+- project.clj ... project ファイル
+- profiles.clj ... 環境設定(動的, 開発/テスト用)
+
+** アプリの実行方法
+1. docker-compose の build
+   #+BEGIN_SRC shell
+docker-compose build
+   #+END_SRC
+
+2. docker-compose の実行
+    #+BEGIN_SRC shell
+docker-compose run --service-port repl
+    #+END_SRC
+3. leiningen の実行
+
+    0th release では, hot fix patch 適用のために, compile 実行ではなく, repl 実行.
+    #+BEGIN_SRC shell
+lein repl
+(start)
+    #+END_SRC
+
+    このとき, project.clj に repl option
+    #+BEGIN_SRC clojure
+:repl-options
+{:host "0.0.0.0"
+ :port 39998}
+    #+END_SRC
+    としているので, emacs / vscode で, 39998 port から環境に接続できます。
+
+** postgresql のデバッグ、緊急メンテナンス
+local -> docker's psql
+#+begin_src shell
+psql -h 127.0.0.1 -p 5565 -U meguru picpage_db
+#+end_src
