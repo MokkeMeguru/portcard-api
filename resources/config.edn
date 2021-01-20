@@ -18,7 +18,7 @@
   :db #ig/ref :portcard-api.infrastructure.sql.sql/sql
   :image-db #ig/ref :portcard-api.infrastructure.image-db.image-db/image-db}
 
- :portcard-api.server/server
+ :portcard-api.infrastructure.server/server
  {:env #ig/ref :portcard-api.infrastructure.env/env
   :router #ig/ref :portcard-api.infrastructure.router.core/router
   :port 3000}}

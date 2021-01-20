@@ -5,7 +5,48 @@
 lein new app <project-name>
 #+END_SRC
 ** 追加したライブラリ
+- firebase 関係
+  - [com.google.firebase/firebase-admin "7.0.1"]
+- handler / swagger 関係
+  - [ring/ring-jetty-adapter "1.8.2"]
+  - [metosin/reitit "0.5.10"]
+  - [metosin/reitit-swagger "0.5.10"]
+  - [metosin/reitit-swagger-ui "0.5.10"]
+  - [ring-cors "0.1.13"]
+  - [ring-logger "1.0.1"]
+  - [com.fasterxml.jackson.core/jackson-core "2.11.3"] パッケージのバージョン衝突のために指定
 
+- 暗号化
+  - [buddy/buddy-hashers "1.6.0"]
+
+- 環境変数の読み込み
+  - [environ "1.2.0"]
+   
+- ロギング
+  - [com.taoensso/timbre "5.1.0"]
+  - [com.fzakaria/slf4j-timbre "0.3.20"]
+
+- アプリの起動, 停止, 更新処理
+  - [integrant "0.8.0"]
+  - [integrant/repl "0.3.2"]
+
+- sql 処理
+  - [honeysql "1.0.444"]
+  - [seancorfield/next.jdbc "1.1.610"]
+  - [hikari-cp "2.13.0"]
+  - [org.postgresql/postgresql "42.2.18"]
+  - [net.ttddyy/datasource-proxy "1.5"]
+
+- マイグレーション処理
+  - [ragtime "0.8.0"]
+
+- json 処理, 時刻処理, その他の処理
+  - [clj-time "0.15.2"]
+  - [cheshire "5.10.0"]
+  - [camel-snake-kebab "0.4.2"]
+
+
+なおパッケージのバージョン管理には, lein-ancient を用いる。
 ** ディレクトリ構成
 - docs ... 開発ドキュメント, release note
 - containers ... docker ファイル関連
@@ -16,7 +57,26 @@ lein new app <project-name>
   - secret.json.gpg ... firebase のセキュリティキー (暗号化)
 - project.clj ... project ファイル
 - profiles.clj ... 環境設定(動的, 開発/テスト用)
-
+- src
+  - portcard-api
+    - core.clj ... root
+    - util.clj
+    - domain ... モデル定義
+    - infrastructure
+      - env.clj ... 環境設定の読み込み
+      - firebase
+      - handler ... api のハンドラ
+      - openapi
+      - router ... api のルーティング
+      - sql
+      - image_db ... 画像I/O
+    - interface
+      - database
+      - firebase
+      - image_db
+      - image_processor ... トリミングなどの画像処理
+    - usecase
+- test テストコード
 ** アプリの実行方法
 1. docker-compose の build
    #+BEGIN_SRC shell
