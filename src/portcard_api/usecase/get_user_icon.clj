@@ -3,7 +3,6 @@
             [portcard-api.interface.image-db.icons-repository :as icons-repository]
             [portcard-api.util :refer [err->> border-error]]
             [portcard-api.domain.errors :as errors]
-            [portcard-api.usecase.check-user-exist :as check-user-exist-usecase]
             [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]))
 
 (defn user-exist? [user]

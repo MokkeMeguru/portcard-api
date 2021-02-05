@@ -2,12 +2,13 @@
   (:require [reitit.ring.middleware.multipart :as multipart]
             [portcard-api.usecase.save-user-profile-icon :as save-user-profile-icon-usecase]
             [portcard-api.usecase.get-user-icon :as get-user-icon-usecase]
+            [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
             [clojure.walk :as w]
             [clojure.java.io :as io]))
 
 (def get-user-profile-icon
   {:summary "get user icon"
-   :parameters {:path {:icon-blob string? :user-id string?}}
+   :parameters {:path ::openapi-user-profile/get-user-profile-icon-parameters}
    :handler (fn [{:keys [parameters image-db db image-db]}]
               (let [icon-blob (-> parameters :path :icon-blob)
                     uname (-> parameters :path :user-id)
@@ -24,7 +25,7 @@
    :swagger {:security [{:Bearer []}]}
    :parameters {:multipart
                 {:file multipart/temp-file-part}
-                :path {:user-id string?}}
+                :path ::openapi-user-profile/post-user-profile-icon-parameters-path}
    :responses {200 {:body {:file-id string?}}}
    :handler (fn [{:keys [parameters db image-db headers]}]
               (let [{{:keys [file]} :multipart} parameters

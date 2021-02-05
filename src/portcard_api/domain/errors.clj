@@ -11,6 +11,7 @@
 (def user-creation-error {:status 500 :body {:code 1105 :message "unknown user creation error from db"}})
 
 (def user-not-found {:status 404 :body {:code 1401 :message "user is not found"}})
+(def user-is-deleted {:status 404 :body {:code 1402 :message "user is deleted"}})
 
 (def login-failed {:status 500 :body {:code 1501 :message "cannot generate login token"}})
 (def invalid-password {:status 400 :body {:code 1502 :message "passward is invalid"}})

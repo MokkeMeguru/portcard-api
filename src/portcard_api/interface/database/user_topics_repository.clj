@@ -100,8 +100,7 @@
 
   (create-user-topic [{:keys [spec]} topic]
     {:pre [(s/valid? ::user-topic-model/creation-user-topic topic)]
-     ;; :post [(s/valid? ::user-topic-model/user-topic %)]
-     }
+     :post [(s/valid? ::user-topic-model/user-topic %)]}
     (let [topic-db (->user-topic-db topic)
           topic-image-db (->user-topic-image-db topic)]
       (with-open [conn (jdbc/get-connection (:datasource spec))]

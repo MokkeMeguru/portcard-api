@@ -134,7 +134,8 @@
 ;;       {:jdbc-url (environ.core/env :database-url)}))}))
 
 ;; (get-users inst)
-;; (delete-user inst {:uname "meguru"})
+;; (delete-user inst {:uname "meguru2"})
+
 ;; (satisfies? Users inst)
 ;; (def sample-user {:uname "sample" :uid "xxx-xxx" :display_name "sample"})
 ;; (create-user inst sample-user)

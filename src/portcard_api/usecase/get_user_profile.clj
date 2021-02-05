@@ -1,7 +1,5 @@
 (ns portcard-api.usecase.get-user-profile
   (:require [clojure.spec.alpha :as s]
-            [portcard-api.usecase.check-user-exist :as check-user-exist-usecase]
-            [portcard-api.usecase.check-id-token :as check-id-token]
             [portcard-api.util :refer [err->> border-error]]
             [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
@@ -24,13 +22,11 @@
   (let [[user-roles err] (err->> {:function #(user-roles-repository/get-user-role db user-id)
                                   :error-wrapper errors/database-error}
                                  border-error)]
-    (println user-roles)
     (if (nil? err)
       [(assoc m :roles (mapv  #(get-user-role-links (merge {:db db} %)) user-roles)) nil]
       [nil err])))
 
 (defn get-user-contact [{:keys [db user-id] :as m}]
-  (println "user-id " user-id)
   (let [[contact err] (err->> {:function #(user-profiles-contacts-repository/get-contact db user-id)
                                :error-wrapper errors/database-error}
                               border-error)]
@@ -53,7 +49,6 @@
   (let [[user err] (err->> {:function #(users-repository/get-user db :uname uname)
                             :error-wrapper errors/database-error}
                            border-error)]
-    (println user)
     (cond
       (not (nil? err)) [nil err]
       (empty? user) [nil errors/user-not-found]

@@ -48,7 +48,12 @@
                  ;; for others
                  [camel-snake-kebab "0.4.2"]
 
-                 [orchestra "2020.09.18-1"]]
+                 [com.google.api-client/google-api-client "1.23.0"]
+                 [com.google.oauth-client/google-oauth-client-jetty "1.23.0"]
+                 [com.google.apis/google-api-services-gmail "v1-rev83-1.23.0"]
+                 [com.sun.mail/javax.mail "1.6.2"]
+                 [commons-codec/commons-codec "1.15"]
+                 [orchestra "2021.01.01-1"]]
 
   :main ^:skip-aot portcard-api.core
   :target-path "target/%s"
