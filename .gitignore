@@ -15,3 +15,6 @@ resources/secret.json
 /image-db/icons/*.png
 dev-migration.log
 resources/_secret.txt
+/resources/credentials.json
+/resources/tokens.tar.gz
+/resources/tokens/
