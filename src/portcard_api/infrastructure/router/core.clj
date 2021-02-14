@@ -29,9 +29,11 @@
    [portcard-api.infrastructure.router.sample :refer [sample-router]]
    [portcard-api.infrastructure.router.registration :refer [registration-router]]
    [portcard-api.infrastructure.router.user-profile :refer [user-profile-router]]
-   [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db wrap-image-db]]))
+   [portcard-api.infrastructure.router.user-topics :refer [user-topics-router]]
+   [portcard-api.infrastructure.router.contact :refer [contact-router]]
+   [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db wrap-image-db wrap-gmail-service]]))
 
-(defn app [env db image-db]
+(defn app [env db image-db gmail-service]
   (ring/ring-handler
    (ring/router
     [["/swagger.json"
@@ -48,7 +50,9 @@
      ["/api"
       (sample-router env)
       (registration-router env)
-      (user-profile-router env)]]
+      (user-profile-router env)
+      (user-topics-router env)
+      (contact-router env)]]
 
     {:exception pretty/exception
      :data {:coercion reitit.coercion.spec/coercion
@@ -73,15 +77,18 @@
                            ;; multipart
              multipart/multipart-middleware
              [wrap-db db]
-             [wrap-image-db image-db]]}})
+             [wrap-image-db image-db]
+             [wrap-gmail-service gmail-service]]}})
+
    (ring/routes
     (swagger-ui/create-swagger-ui-handler {:path "/api"})
     (ring/create-default-handler))
    {:middleware [my-wrap-cors
                  wrap-with-logger]}))
 
-(defmethod ig/init-key ::router [_ {:keys [env db image-db]}]
+(defmethod ig/init-key ::router [_ {:keys [env db image-db gmail-service]}]
   (timbre/info "router got: env" env)
   (timbre/info "router got: db" db)
   (timbre/info "router got: image-db" image-db)
-  (app env db image-db))
+  (timbre/info "router got: gmail-service" gmail-service)
+  (app env db image-db gmail-service))

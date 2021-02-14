@@ -18,7 +18,7 @@
     {:files (filter #(-> % str file-extension (= ".png")) (file-seq (io/file (:parent spec) "captures")))})
   (insert-capture [{:keys [spec]} image blob]
     (ImageIO/write image "png" (io/file (:parent spec) "captures" blob)))
-  (get-capture [[{:keys [spec]}] blob]
+  (get-capture [{:keys [spec]} blob]
     (let [file (io/file (:parent spec) "captures" blob)]
       (if (.isFile file)
         {:file file}

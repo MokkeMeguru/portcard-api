@@ -26,5 +26,15 @@
 (defn database-error [message]
   {:status 500 :body {:code 1802 :message (str "error caused from sql query : " message)}})
 
-(def icon-not-found {:status 400 :body {:code 1801 :message "the icon is not found"}})
-(def icon-save-failed {:status 400 :body {:code 1802 :message "the icon image saving failed"}})
+(defn gmail-error [message]
+  {:status 500 :body {:code 1803 :message (str "error caused from gmail service : " message)}})
+
+(def icon-not-found {:status 400 :body {:code 1901 :message "the icon is not found"}})
+(def icon-save-failed {:status 400 :body {:code 1902 :message "the icon image saving failed"}})
+
+(def topic-not-found {:status 400 :body {:code 2001 :message "the topic is not found"}})
+(def topic-capture-not-found {:status 400 :body {:code 2101 :message "the topic capture is not found"}})
+
+(def user-contact-not-found {:status 400 :body {:code 2201 :message "the user does not have his contact info"}})
+
+(def invalid-contact-period {:status 400 :body {:code 2301 :message "the contact period is too short"}})

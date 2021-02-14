@@ -19,7 +19,8 @@
  :portcard-api.infrastructure.router.core/router
  {:env #ig/ref :portcard-api.infrastructure.env/env
   :db #ig/ref :portcard-api.infrastructure.sql.sql/sql
-  :image-db #ig/ref :portcard-api.infrastructure.image-db.image-db/image-db}
+  :image-db #ig/ref :portcard-api.infrastructure.image-db.image-db/image-db
+  :gmail-service #ig/ref :portcard-api.infrastructure.gmail.gmail/gmail}
 
  :portcard-api.infrastructure.server/server
  {:env #ig/ref :portcard-api.infrastructure.env/env

@@ -26,10 +26,9 @@
            [com.google.api.client.auth.oauth2 Credential]
            [com.google.api.services.gmail.model Label]))
 
+(def application-name "Portcard API")
 (def json-factory (JacksonFactory/getDefaultInstance))
 (def http-transport (GoogleNetHttpTransport/newTrustedTransport))
-(def charset "utf-8")
-(def encode "base64")
 
 (def scopes [GmailScopes/GMAIL_LABELS
              GmailScopes/GMAIL_SEND])
@@ -47,8 +46,8 @@
   (def http-transport (GoogleNetHttpTransport/newTrustedTransport))
   (def scopes [GmailScopes/GMAIL_LABELS
                GmailScopes/GMAIL_SEND])
-  (def credential-file (io/resource \"credential.json\"))
-  (def tokens-dir (io/resource \"tokens\"))
+  (def credential-file \"credential.json\")
+  (def tokens-dir \"tokens\")
   (get-credential credential-file tokens-dir scopes)
   ```
   "
@@ -61,18 +60,27 @@
                    (setAccessType "offline")
                    build)]
       (-> flow
-          (AuthorizationCodeInstalledApp. (LocalServerReceiver.))
+          (AuthorizationCodeInstalledApp.  (LocalServerReceiver.))
           (.authorize "user")))))
+
+(defn get-service "
+  get gmail api service's connection with application-name (string)
+  "
+  [^String application-name credential]
+  (.. (Gmail$Builder. http-transport json-factory credential)
+      (setApplicationName application-name)
+      build))
 
 (defmethod ig/init-key ::gmail
   [_ {:keys [env]}]
   (let [credential-file (:gmail-credential-file env)
         tokens-dir (:gmail-tokens-dir env)
         gmail-host-addr (:gmail-host-addr env)
-        credential (get-credential credential-file tokens-dir scopes)]
+        credential (get-credential credential-file tokens-dir scopes)
+        service (get-service application-name credential)]
     (timbre/info "load gmail credential ...")
     (timbre/info "credential file: " credential-file)
     (timbre/info "tokens directory: " tokens-dir)
     (timbre/info "gmail host address: " gmail-host-addr)
-    (->Boundary {:credential credential
+    (->Boundary {:service service
                  :gmail-host-addr gmail-host-addr})))

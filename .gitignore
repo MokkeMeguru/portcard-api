@@ -18,3 +18,4 @@ resources/_secret.txt
 /resources/credentials.json
 /resources/tokens.tar.gz
 /resources/tokens/
+/image-db/captures/*.png

@@ -65,4 +65,12 @@
 (s/def ::subject string?)
 (s/def ::message string?)
 
+(s/def ::mail-message (s/keys :req-un [::to ::subject ::message]))
+
 (s/def ::mime-message mime-message?)
+
+;; infrastructure
+(s/def ::gmail-host-addr ::from)
+(s/def ::boundary-service
+  (s/keys :req-un [::credential
+                   ::gmail-host-addr]))

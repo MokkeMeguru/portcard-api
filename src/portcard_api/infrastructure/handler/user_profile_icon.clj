@@ -9,7 +9,7 @@
 (def get-user-profile-icon
   {:summary "get user icon"
    :parameters {:path ::openapi-user-profile/get-user-profile-icon-parameters}
-   :handler (fn [{:keys [parameters image-db db image-db]}]
+   :handler (fn [{:keys [parameters db image-db]}]
               (let [icon-blob (-> parameters :path :icon-blob)
                     uname (-> parameters :path :user-id)
                     [{{:keys [file]} :icon} err]
