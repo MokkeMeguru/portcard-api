@@ -19,10 +19,13 @@
       (doto
        ig/load-namespaces)))
 
-(defn start []
-  (igr/set-prep! (constantly (load-config config-file)))
-  (igr/prep)
-  (igr/init))
+(defn start
+  ([]
+   (start config-file))
+  ([config-file]
+   (igr/set-prep! (constantly (load-config config-file)))
+   (igr/prep)
+   (igr/init)))
 
 (defn stop []
   (igr/halt))

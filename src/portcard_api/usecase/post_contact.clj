@@ -8,10 +8,10 @@
             [portcard-api.interface.database.contacts-repository :as contacts-repository]
             [portcard-api.interface.database.utils :as utils]))
 
-(defn ->message [display-name subject from body-text]
+(defn ->message [display-name subject from-name from body-text]
   (format "%s 様
 平素より Portcard をご利用いただきありがとうございます。
-%s 様より以下のメッセージを頂きましたので、ご連絡差し上げました。
+%s (%s) 様より以下のメッセージを頂きましたので、ご連絡差し上げました。
 --
 %s
 
@@ -22,10 +22,10 @@
 Portcard (contact: meguru.mokke@gmail.com)
 
 "
-          display-name from subject body-text))
+          display-name from-name from subject body-text))
 
-(defn ->subject [display-name from subject]
-  (format "Portcard: %s さん、 %s よりメッセージが届きました。(%s)" display-name from subject))
+(defn ->subject [display-name from-name subject]
+  (format "Portcard: %s さん、 %s さんよりメッセージが届きました。(%s)" display-name from-name subject))
 
 (defn ->uname [{:keys [contact] :as m}]
   [(assoc m :uname (:to contact)) nil])
@@ -53,14 +53,20 @@ Portcard (contact: meguru.mokke@gmail.com)
       :else [(assoc m :user-contact contact) nil])))
 
 (defn ->contact [{:keys [user contact user-contact] :as m}]
-  (let [{:keys [from title body-text]} contact
+  (let [{:keys [from-name from title body-text]} contact
         {:keys [email]} user-contact
         {:keys [display_name]} user
         to email
         uid (java.util.UUID/randomUUID)
-        message (->message display_name title from body-text)
-        _subject (->subject display_name from title)]
-    [(assoc m :contact {:uid uid :to to :subject _subject :title title :from from :message message}) nil]))
+        message (->message display_name title from-name from body-text)
+        _subject (->subject display_name from-name title)]
+    [(assoc m :contact {:uid uid
+                        :to to
+                        :subject _subject
+                        :title title
+                        :from-name from-name
+                        :from from
+                        :message message}) nil]))
 
 (defn post-contact-gmail [{:keys [gmail-service contact] :as m}]
   (let [[result err] (err->>
@@ -73,7 +79,7 @@ Portcard (contact: meguru.mokke@gmail.com)
       (do (println result)
           [m nil]))))
 
-(def contact-min-period (* 1000 60 60 3))
+(def contact-min-period (* 1000 60 30))
 
 (defn check-contact-period [{:keys [db contact user] :as m}]
   (let [[result err] (err->>
@@ -89,11 +95,12 @@ Portcard (contact: meguru.mokke@gmail.com)
 
 (defn post-contact-db [{:keys [db contact user] :as m}]
   (let [user-id (:uid user)
-        {:keys [uid title from]} contact
+        {:keys [uid title from from-name]} contact
         contact {:uid uid
                  :to user-id
                  :subject title
-                 :from from}
+                 :from from
+                 :from-name from-name}
         [result err] (err->>
                       {:function #(contacts-repository/create-contact db contact)
                        :error-wrapper errors/database-error}
@@ -110,12 +117,13 @@ Portcard (contact: meguru.mokke@gmail.com)
    ->uname
    check-user-exist
    get-contact-to
-   check-contact-period
+   ;; check-contact-period
    ->contact
    post-contact-gmail
    post-contact-db))
 
 ;; {
+;;   "from-name": "Meguru"
 ;;   "from": "meguru.mokke@gmail.com",
 ;;   "to": "Meguru",
 ;;   "title": "sample message",

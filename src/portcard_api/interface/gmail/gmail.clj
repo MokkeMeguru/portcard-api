@@ -18,7 +18,10 @@
     {:pre [(s/valid? ::gmail-model/mail-message message)]
      :post [(s/valid? ::gmail-model/gmail-response %)]}
     (let [{:keys [gmail-host-addr service]} spec
-          message (gmail-utils/create-message (assoc message :from gmail-host-addr))
+          cc (:from message)
+          message (gmail-utils/create-message (-> message
+                                                  (assoc :from gmail-host-addr)
+                                                  (assoc :cc cc)))
           encoded-message (gmail-utils/create-message-with-email message)]
       (gmail-utils/send-message service "me" encoded-message))))
 

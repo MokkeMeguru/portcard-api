@@ -16,9 +16,9 @@
       :else
       [(assoc m :user-id (:uid user)) nil])))
 
-(defn get-topics [{:keys [user-id db from take category] :as m}]
+(defn get-topics [{:keys [user-id db from take category order] :as m}]
   (let [category-idx (when-not (nil? category) (user-roles-model/role-category category))
-        [topics err] (err->> {:function #(user-topics-repository/get-user-topics-chunk db user-id from take category-idx "asc")
+        [topics err] (err->> {:function #(user-topics-repository/get-user-topics-chunk db user-id from take category-idx order)
                               :error-wrapper errors/database-error}
                              border-error)]
     (cond
@@ -26,8 +26,8 @@
       :else
       [(assoc m :topics topics) nil])))
 
-(defn get-user-topics [uname from take category db]
+(defn get-user-topics [uname from take category order db]
   (err->>
-   {:uname uname :from from :take take :category category :db db}
+   {:uname uname :from from :take take :category category :order order :db db}
    user-exist?
    get-topics))

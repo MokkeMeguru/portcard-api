@@ -22,8 +22,9 @@
 (s/def ::from int?)
 (s/def ::take int?)
 (s/def ::category string?)
+(s/def ::order #{"asc" "desc"})
 (s/def ::get-user-topics-parameters
-  (s/keys :req-un [::from ::take] :opt-un [::category]))
+  (s/keys :req-un [::take ::order] :opt-un [::from ::category]))
 (s/def ::user-id string?)
 (s/def ::topic-id string?)
 (s/def ::get-user-topics-paths (s/keys :req-un [::user-id]))
@@ -63,6 +64,7 @@
    (ds/opt :description) ::description})
 
 (defn ->topic [title category description link]
+  (print "topic create" title category description link)
   (util/remove-empty
    {:title title
     :category category
@@ -75,6 +77,7 @@
     (util/remove-empty
      {:uid uid
       :idx idx
+      :title title
       :category (user-roles-model/decode-role-category category)
       :link link
       :description description
@@ -88,23 +91,23 @@
    :responses {201 {:body ::get-user-topics-responses}}
    :handler (fn [{:keys [parameters db]}]
               (let [{:keys [query path]} parameters
-                    {:keys [from take category]} query
+                    {:keys [from take category order]} query
                     {:keys [user-id]} path
-                    [result err] (get-user-topics-usecase/get-user-topics user-id from take category db)]
+                    [result err] (get-user-topics-usecase/get-user-topics user-id from take category order db)]
                 (cond
                   (not (nil? err)) err
                   :else {:status 201
-                         :body (map ->topic-response (:topics result))})))})
+                         :body (mapv ->topic-response (:topics result))})))})
 
 (def post-user-topic
   {:summary "post user topic"
    :swagger {:security [{:Bearer []}]}
    :parameters {:multipart post-topic-parameters}
    :handler (fn [{:keys [parameters headers db image-db]}]
-              (let [{{:keys [file title category description]} :multipart} parameters
+              (let [{{:keys [file title category description link]} :multipart} parameters
                     id-token (-> headers w/keywordize-keys :authorization)
                     topic-image (:tempfile file)
-                    topic (->topic title category description)
+                    topic (->topic title category description link)
                     [result err] (post-user-topic-usecase/post-user-topic id-token topic topic-image db image-db)]
                 {:status 201}))})
 

@@ -31,7 +31,7 @@
 (defn create-message "
   convert message map into mime message
   "
-  [{:keys [to from subject message]}]
+  [{:keys [to from cc subject message]}]
   (let [props (Properties.)
         session (Session/getDefaultInstance props nil)
         email (MimeMessage. session)]
@@ -39,6 +39,7 @@
      email
       (.setFrom (InternetAddress. from))
       (.addRecipient Message$RecipientType/TO (InternetAddress. to))
+      (.addRecipient Message$RecipientType/CC (InternetAddress. cc))
       (.setSubject subject charset)
       (.setText message charset))))
 

@@ -33,6 +33,7 @@
 (def gmail-service? (partial instance? Gmail))
 (def mime-message? (partial instance? MimeMessage))
 (def gmail-message? (partial instance? Message))
+(def google-auth-code-flow? (partial instance? GoogleAuthorizationCodeFlow))
 
 ;; resource files
 (s/def ::credential-file (s/and url? file-exist?))
@@ -44,6 +45,8 @@
 (s/def ::scopes (s/coll-of ::scope))
 (s/def ::application-name string?)
 (s/def ::service gmail-service?)
+(s/def ::port (s/and int? #(<= 0 % 0x10000)))
+(s/def ::auth-code-flow google-auth-code-flow?)
 
 (s/def ::credential credential?)
 (s/def ::user-id string?)
@@ -62,10 +65,11 @@
 
 (s/def ::to ::address)
 (s/def ::from ::address)
+(s/def ::cc ::address)
 (s/def ::subject string?)
 (s/def ::message string?)
 
-(s/def ::mail-message (s/keys :req-un [::to ::subject ::message]))
+(s/def ::mail-message (s/keys :req-un [::to ::from ::subject ::message]))
 
 (s/def ::mime-message mime-message?)
 

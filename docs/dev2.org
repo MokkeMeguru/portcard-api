@@ -8,7 +8,6 @@ firebase より project の作成
 (analytics は任意)
 * Add Firebase into client
 index.html に以下行を追加 (firebase より指示)
-*
 ** node module の追加
 npm install --save firebase
 npm install --save react-firebaseui
@@ -16,3 +15,27 @@ npm install --save react-firebaseui
 
 * server run
 export GOOGLE_APPLICATION_CREDENTIALS="resources/secrets.json"
+
+* how to add one-shot command
+1. write resources/cmd/xxx/config.edn
+
+    for determine config settings for its command.
+
+2. write portcard-api.cmd.xxx.core.clj
+
+    which is main command using main app's usecase
+
+3. write scripts/xxx.sh
+
+    for the endpoint to run
+
+4. chmod +x scripts/xxx.sh as ...
+
+   #+begin_src shell
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    export GOOGLE_APPLICATION_CREDENTIALS=resources/secret.json
+    lein exec -p src/portcard_api/cmd/migrate/core.clj
+   #+end_Src
+5. run ./scripts/xxx.sh

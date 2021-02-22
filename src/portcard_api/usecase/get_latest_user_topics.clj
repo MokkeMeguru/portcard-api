@@ -17,7 +17,7 @@
 
 (defn get-topics [{:keys [user-id db from take category] :as m}]
   (let [category-idx (when-not (nil? category) (user-roles-model/role-category category))
-        [topics err] (err->> {:function #(user-topics-repository/get-user-topics-chunk db user-id from take category-idx "desc")
+        [topics err] (err->> {:function #(user-topics-repository/get-user-topics-chunk db user-id nil take category-idx "desc")
                               :error-wrapper errors/database-error}
                              border-error)]
     (cond

@@ -18,7 +18,6 @@ services:
     ports:
       - 3000:3000
       - 39998:39998
-      - 38781:38781
     volumes:
       - ".:/app"
       - "lib_data:/root/.m2"

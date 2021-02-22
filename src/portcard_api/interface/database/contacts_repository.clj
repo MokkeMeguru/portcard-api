@@ -21,20 +21,22 @@
   (satisfies? Contacts inst))
 
 (defn ->contact [contact-db]
-  (let [{:keys [uid user_uid subject contact_from created_at]} contact-db
+  (let [{:keys [uid user_uid subject contact_from contact_from_name created_at]} contact-db
         created_at (utils/sql-to-long created_at)]
     (utils/remove-empty
      {:uid uid
       :to user_uid
       :from contact_from
+      :from-name contact_from_name
       :subject subject
       :created_at created_at})))
 
 (defn ->contact-db [contact]
-  (let [{:keys [uid to subject from]} contact]
+  (let [{:keys [uid to subject from from-name]} contact]
     {:uid uid
      :user_uid to
      :contact_from from
+     :contact_from_name from-name
      :subject subject}))
 
 (s/def ::contacts-repository contacts-repository?)
@@ -109,3 +111,11 @@
 ;;   (count (get-contacts-by-user inst (:to sample-contact))))
 
 ;; (delete-contact inst {:user_uid  "gYbH54n3WGPvz9CEWayIEP2JaKg1"})
+
+;; {
+;;   "from": "meguru.mokke@gmail.com",
+;;   "from-name": "Meguru",
+;;   "to": "gYbH54n3WGPvz9CEWayIEP2JaKg1",
+;;   "title": "hello",
+;;   "body-text": "nice to meet you"
+;; }

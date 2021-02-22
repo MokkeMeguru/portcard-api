@@ -7,7 +7,8 @@
             [portcard-api.domain.base :as base-model]
             [next.jdbc.result-set :as rs]
             [orchestra.spec.test :as st]
-            [next.jdbc.sql :as njs]))
+            [next.jdbc.sql :as njs]
+            [portcard-api.util :as util]))
 
 ;; define protocol
 (defprotocol UserTopics
@@ -18,7 +19,6 @@
   ;; TODO: (get-topic [db uid])
   (create-user-topic [db topic])
   (count-user-topics [db user-id])
-  (get-latest-user-topic [db user-id])
   (delete-user-topic [db topic-uid]))
 
 (defn user-topics-repository? [inst]
@@ -86,10 +86,25 @@
 (def sql-basic-selection
   "SELECT * FROM user_topics INNER JOIN user_topic_images ON (user_topics.uid = user_topic_images.user_topic_uid)")
 
-(def sql-insert-option)
+(defn build-get-user-topics-chunk-query [user-uid from take category order]
+  {:pre [(string? user-uid)
+         (or (nil? from) (int? from))
+         (<= 1 take 20)
+         (or (nil? category) (int? category))
+         (some (partial = order) ["asc" "desc"])]}
+  (clojure.string/join
+   " "
+   (cond-> []
+     true (conj sql-basic-selection)
+     (some? user-uid) (conj "WHERE user_uid = ?")
+     (and (some? from) (= order "asc"))  (conj "AND idx >= ?")
+     (and (some? from) (not= order "asc")) (conj "AND idx <= ?")
+     (some? category) (conj "AND category = ?")
+     (some? order) (conj (str "order by idx " order))
+     (some? take) (conj "limit ?"))))
+
 (extend-protocol UserTopics
   portcard_api.infrastructure.sql.sql.Boundary
-
   (get-user-topics [{:keys [spec]}]
     {:post [(s/valid? ::user-topic-model/user-topics %)]}
     (with-open [conn (jdbc/get-connection (:datasource spec))]
@@ -118,14 +133,9 @@
   (get-user-topics-chunk
     [{:keys [spec]} user-uid topic-from topic-take category order] ;; order asc or desc
     (with-open [conn (jdbc/get-connection (:datasource spec))]
-      (let [raw-topics
-            (if (nil? category)
-              (jdbc/execute! conn
-                             [(clojure.string/join " " [sql-basic-selection "WHERE user_uid = ?" "AND" "idx >= ?" "order by idx" order "limit ?"]) user-uid topic-from topic-take]
-                             {:builder-fn rs/as-unqualified-lower-maps})
-              (jdbc/execute! conn
-                             [(clojure.string/join " "  [sql-basic-selection "WHERE user_uid = ?" "AND" "idx >= ?" "AND" "category = ?" "order by idx" order "limit ?"]) user-uid topic-from category topic-take]
-                             {:builder-fn rs/as-unqualified-lower-maps}))]
+      (let [query (build-get-user-topics-chunk-query user-uid topic-from topic-take category order)
+            raw-topics (jdbc/execute! conn (util/remove-nil [query user-uid topic-from topic-take category])
+                                      {:builder-fn rs/as-unqualified-maps})]
         (->>
          raw-topics
          (map #(into {} %))
@@ -136,11 +146,12 @@
       (jdbc/execute-one! conn
                          [(clojure.string/join " " ["SELECT COUNT (*) FROM user_topics"])])))
 
-  (get-latest-user-topic [{:keys [spec]} user-id]
-    (with-open [conn (jdbc/get-connection (:datasource spec))]
-      (->> (jdbc/execute-one! conn
-                              [(clojure.string/join " " [sql-basic-selection "where user_uid = ?" "order by user_topics.created_at desc"]) user-id])
-           ->user-topic)))
+  ;; (get-latest-user-topic [{:keys [spec]} user-id]
+  ;;   (with-open [conn (jdbc/get-connection (:datasource spec))]
+  ;;     (->> (jdbc/execute-one! conn
+  ;;                             [(clojure.string/join " " [sql-basic-selection "where user_uid = ?" "order by user_topics.created_at desc" "limit 1"]) user-id]
+  ;;                             {:builder-fn rs/as-unqualified-maps})
+  ;;          ->user-topic)))
 
   (create-user-topic [{:keys [spec]} topic]
     {:pre [(s/valid? ::user-topic-model/creation-user-topic topic)]
@@ -165,6 +176,13 @@
                (-> topic-image-result zero? not)))))))
 
 
+;; (let [user-uid sample-uid
+;;       from 0
+;;       take 10
+;;       category nil
+;;       order "desc"]
+;;   (build-get-user-topics-chunk-query user-uid from take category order))
+
 ;; test
 
 ;; (clojure.string/join " " [sql-basic-selection "where user_uid = ?" "order by created_at desc"])
@@ -185,10 +203,15 @@
 
 ;; (get-user-topic-by-id inst (java.util.UUID/fromString "e0d17265-6a3b-4f23-a0da-6ac7bf75fd43"))
 ;; (def sample-uid "b3mXXLoTA1QeLb1UoiknB3eerwn1")
+ ;; (get-user-topics inst)
+ ;;
+;; (count (get-user-topic inst sample-uid))
+
+
+;; (get-user-topics-chunk inst sample-uid 0 100 nil "desc")
+
+
 ;; (get-user-topics inst)
-;; (get-user-topic inst sample-uid)
-;; (get-user-topic inst "*")
-;; (get-user-topics-chunk inst sample-uid 0 10 nil "asc")
 ;; (def sample-uuid (java.util.UUID/fromString "8b6a444b-203a-4447-9b43-c6d1c6409381"))
 ;; (def sample-uuid2 (java.util.UUID/fromString "8b6a444b-203a-4447-9b43-c6d1c6409382"))
 
@@ -223,7 +246,8 @@
 ;; (get-user-topics-chunk inst sample-uid 0 10 nil "asc")
 ;; (get-user-topics-chunk inst sample-uid 0 10 0 "asc")
 ;; (get-user-topics-chunk inst sample-uid 0 10 1 "asc")
-;; (get-latest-user-topic inst sample-uid)
+
+
 ;; (get-user-topic inst sample-uid)
 ;; (get-user-topic inst "*")
 
