@@ -39,3 +39,23 @@ export GOOGLE_APPLICATION_CREDENTIALS="resources/secrets.json"
     lein exec -p src/portcard_api/cmd/migrate/core.clj
    #+end_Src
 5. run ./scripts/xxx.sh
+
+
+* compress & extract
+** compress
+#+begin_src shell
+tar -zcvf tokens.tar.gz tokens
+gpg -c tokens.tar.gz
+gpg -c credentials.json
+gpg -c secret.json
+#+end_Src
+** extract
+
+
+#+begin_src shell
+gpg secret.json
+gpg credentials.json
+gpg tokens.tar.gz
+tar -zxvf tokens.tar.gz tokens
+
+#+end_Src
