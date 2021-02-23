@@ -21,6 +21,7 @@
 今後とも、本サービスのご利用のほどよろしくお願いいたします。
 Portcard (contact: meguru.mokke@gmail.com)
 
+本メールに覚えがない場合は、お手数ですが meguru.mokke@gmail.com までご連絡下さい。
 "
           display-name from-name from subject body-text))
 
@@ -87,6 +88,7 @@ Portcard (contact: meguru.mokke@gmail.com)
                        :error-wrapper errors/database-error}
                       border-error)
         now (utils/sql-to-long (utils/sql-now))]
+    (println "checkcontact-period" now result)
     (cond
       (not (nil? err)) [nil err]
       (empty? result) [m nil]
@@ -117,7 +119,7 @@ Portcard (contact: meguru.mokke@gmail.com)
    ->uname
    check-user-exist
    get-contact-to
-   ;; check-contact-period
+   check-contact-period
    ->contact
    post-contact-gmail
    post-contact-db))

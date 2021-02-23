@@ -1,7 +1,8 @@
 (ns portcard-api.infrastructure.handler.contact
   (:require [clojure.spec.alpha :as s]
             [portcard-api.usecase.post-contact :as post-contact-usecase]
-            [clojure.walk :as w]))
+            [clojure.walk :as w]
+            [taoensso.timbre :as timbre]))
 
 (s/def ::id-token string?)
 (s/def ::from string?)
@@ -18,8 +19,11 @@
    ;; :swagger {:secutiry [{:Bearer []}]}
    :parameters {:body ::post-contact-parameters}
    :handler (fn [{:keys [parameters headers db gmail-service]}]
+              (timbre/info "receive-contact: headers" headers)
+              (timbre/info "receive-contact: body" (dissoc (:body parameters) :body-text))
               (let [{:keys [body]} parameters
                     [result err] (post-contact-usecase/post-contact body db gmail-service)]
                 (cond
                   (not (nil? err)) err
-                  :else {:status 201})))})
+                  :else {:status 201
+                         :body {}})))})
