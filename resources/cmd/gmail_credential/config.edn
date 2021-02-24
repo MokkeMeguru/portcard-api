@@ -1,0 +1,4 @@
+{:portcard-api.infrastructure.env/env {}
+ :portcard-api.infrastructure.gmail.gmail/gmail
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :oauth true}}

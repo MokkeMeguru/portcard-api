@@ -4,10 +4,22 @@
             [portcard-api.interface.database.user-profiles-contacts-repository :as user-profiles-contacts-repository]
             [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
             [portcard-api.interface.database.user-role-links-repository :as user-role-links-repository]
-            [portcard-api.usecase.check-user-exist :as check-user-exist-usecase]
             [portcard-api.util :refer [err->> border-error remove-empty]]
             [portcard-api.domain.errors :as errors]
             [portcard-api.domain.user-roles :as user-roles-model]))
+
+(defn user-already-exist? [user]
+  (not (empty? user)))
+
+(defn check-user-exist [{:keys [db user-id] :as m}]
+  (let [[user err] (err->>
+                    {:function #(users-repository/get-user db :uid user-id)
+                     :error-wrapper errors/database-error}
+                    border-error)]
+    (cond
+      (not (nil? err)) [nil err]
+      (not (user-already-exist? user)) [nil errors/user-not-found]
+      :else [(assoc m :user user) nil])))
 
 (defn user-not-found [user]
   (empty? user))
@@ -127,5 +139,5 @@
     :roles roles
     :db db}
    check-token
-   check-user-exist-usecase/check-user-exist
+   check-user-exist
    upsert-all-user-profile))

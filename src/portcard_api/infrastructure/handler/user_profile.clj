@@ -6,43 +6,14 @@
             [taoensso.timbre :as timbre]
             [portcard-api.util :as util]
             [portcard-api.interface.database.utils :as utils]
-            [portcard-api.domain.user-roles :as user-roles-model]))
-
-(s/def ::display-name string?)
-(s/def ::email string?)
-(s/def ::twitter string?)
-(s/def ::facebook string?)
-(s/def ::contact (s/keys :opt-un [::email ::twitter ::facebook]))
-(s/def ::role-category string?)
-(s/def ::link-category-name string?)
-(s/def ::link-url string?)
-(s/def ::primary-rank int?)
-(s/def ::role-link (s/keys :req-un [::link-category-name ::link-url]))
-(s/def ::role-links (s/* ::role-link))
-(s/def ::role (s/keys :req-un [::role-category ::primary-rank] :opt-un [::role-links]))
-(s/def ::roles (s/* ::role))
-(s/def ::icon-blob string?)
-
-(def post-user-profile
-  {:summary "update or insert user profile"
-   :swagger {:security [{:Bearer []}]}
-   :parameters {:body
-                (s/keys :req-un [::display-name] :opt-un [::contact ::roles])}
-   :handler (fn [{:keys [parameters headers db]}]
-              (let [{:keys [body]} parameters
-                    id-token (-> headers w/keywordize-keys :authorization)
-                    {:keys [display-name contact roles]} body
-                    [_ err] (upsert-user-profile-usecase/upsert-user-profile id-token display-name contact roles db)]
-                (if (nil? err)
-                  {:status 201}
-                  err)))})
+            [portcard-api.domain.user-roles :as user-roles-model]
+            [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]))
 
 (defn ->profile-role-link [{:keys [link_category_name link_blob]}]
-
   (let
    [role-link
     (utils/remove-empty
-     {:link-category-name link_category_name ;; (user-roles-model/decode-link-category link_category)
+     {:link-category-name link_category_name
       :link-url link_blob})]
     (if (empty? role-link) nil role-link)))
 
@@ -69,11 +40,23 @@
     :contact (->profile-contact contact)
     :roles (util/remove-nil (mapv ->profile-role roles))}))
 
+(def post-user-profile
+  {:summary "update or insert user profile"
+   :swagger {:security [{:Bearer []}]}
+   :parameters {:body ::openapi-user-profile/post-user-profile-parameters}
+   :handler (fn [{:keys [parameters headers db]}]
+              (let [{:keys [body]} parameters
+                    {:keys [display-name contact roles]} body
+                    id-token (-> headers w/keywordize-keys :authorization)
+                    [_ err] (upsert-user-profile-usecase/upsert-user-profile id-token display-name contact roles db)]
+                (if (nil? err)
+                  {:status 201}
+                  err)))})
+
 (def get-user-profile
   {:summary "get user profile"
-   :parameters {:path {:user-id string?}}
-   :responses {201 {:body
-                    (s/keys :req-un [::display-name] :opt-un [::contact ::roles ::icon-blob])}}
+   :parameters {:path ::openapi-user-profile/get-user-profile-parameters}
+   :responses {201 {:body ::openapi-user-profile/get-user-profile-responses}}
    :handler (fn [{:keys [parameters db]}]
               (let [{{:keys [user-id]} :path} parameters
                     [profile err] (get-user-profile-usecase/get-user-profile user-id db)]

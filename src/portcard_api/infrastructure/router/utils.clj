@@ -9,6 +9,10 @@
   (fn [request]
     (handler (assoc request :image-db image-db))))
 
+(defn wrap-gmail-service [handler gmail-service]
+  (fn [request]
+    (handler (assoc request :gmail-service gmail-service))))
+
 (defn my-wrap-cors
   "Wrap the server response in a Control-Allow-Origin Header to
   allow connections from the web app."

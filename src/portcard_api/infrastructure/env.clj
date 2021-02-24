@@ -9,9 +9,15 @@
   (timbre/info "loading environment via environ")
   (let [database-url (env :database-url)
         running (env :env)
+
+        ;; firebase
         firebase-credentials-path (env :google-application-credentials)
         firebase-credentials (GoogleCredentials/getApplicationDefault)
-        firebase-database (env :firebase-database)]
+        firebase-database (env :firebase-database)
+        ;; gmail
+        gmail-credential-file (env :gmail-credential-file)
+        gmail-tokens-dir (env :gmail-tokens-dir)
+        gmail-host-addr (env :gmail-host-addr)]
 
     (timbre/info "running in " running)
     (timbre/info "database-url" database-url)
@@ -23,4 +29,7 @@
      :migration-log    (env :migration-log)
      :new-migration (env :new-migration)
      :firebase-credentials firebase-credentials
-     :firebase-database firebase-database}))
+     :firebase-database firebase-database
+     :gmail-credential-file gmail-credential-file
+     :gmail-tokens-dir gmail-tokens-dir
+     :gmail-host-addr gmail-host-addr}))

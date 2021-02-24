@@ -96,6 +96,7 @@
 ;; (defonce inst (portcard-api.infrastructure.sql.sql/->Boundary
 ;;                {:datasource (hikari-cp.core/make-datasource
 ;;                              {:jdbc-url (environ.core/env :database-url)})}))
+;; (delete-icon inst "gYbH54n3WGPvz9CEWayIEP2JaKg1")
 ;; (get-icons inst)
 ;; (satisfies? UserProfilesIcons inst)
 ;; (def sample-uid "b3mXXLoTA1QeLb1UoiknB3eerwn1")

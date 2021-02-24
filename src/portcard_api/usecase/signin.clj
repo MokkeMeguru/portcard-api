@@ -7,21 +7,25 @@
             [orchestra.spec.test :as st]
             [taoensso.timbre :as timbre]))
 
-(defn user-not-found [user]
-  (if (empty? user)
-    [nil errors/user-not-found]
-    [user nil]))
-
-(defn signin [id-token db]
+(defn check-id-token [{:keys [id-token db] :as m}]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]
     (if (= :success result)
-      (let [[user err] (err->>
-                        {:function #(users-repository/get-user db :uid user-id)
-                         :error-wrapper errors/database-error}
-                        border-error
-                        user-not-found)]
-        (if (nil? err)
-          {:status 201
-           :body {:uname (:uname user)}}
-          err))
-      cause)))
+      [(assoc m :user-id user-id) nil]
+      [nil cause])))
+
+(defn check-user-exist [{:keys [user-id db] :as m}]
+  (let [[user err] (err->>
+                    {:function #(users-repository/get-user db :uid user-id)
+                     :error-wrapper errors/database-error}
+                    border-error)]
+    (cond
+      (not (nil? err)) [nil err]
+      (empty? user) [nil errors/user-not-found]
+      (:is_deleted user) [nil errors/user-is-deleted]
+      :else [(-> m (assoc :user user)) nil])))
+
+(defn signin [id-token db]
+  (err->>
+   {:id-token id-token :db db}
+   check-id-token
+   check-user-exist))

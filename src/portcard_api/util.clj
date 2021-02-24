@@ -13,16 +13,17 @@
           ~@fns)))
 
 
-;; (err->>
-;;  {:call "Hello"}
-;;  (fn [param]
-;;    (if (.startsWith (:call param) "H")
-;;      [param nil]
-;;      [nil "is not start of H"]))
-;;  (fn [param]
-;;    (if (.endsWith (:call param) "!")
-;;      [param nil]
-;;      [nil "is not end of !"])))
+;; (macroexpand-1
+;;  '(err->>
+;;   {:call "Hello"}
+;;   (fn [param]
+;;     (if (.startsWith (:call param) "H")
+;;       [param nil]
+;;       [nil "is not start of H"]))
+;;   (fn [param]
+;;     (if (.endsWith (:call param) "!")
+;;       [param nil]
+;;       [nil "is not end of !"]))))
 
 
 (defn border-error [{:keys [function error-wrapper]}]

@@ -48,14 +48,22 @@
                  ;; for others
                  [camel-snake-kebab "0.4.2"]
 
-                 [orchestra "2020.09.18-1"]]
+                 [com.google.api-client/google-api-client "1.23.0"]
+                 [com.google.oauth-client/google-oauth-client-jetty "1.23.0"]
+                 [com.google.apis/google-api-services-gmail "v1-rev83-1.23.0"]
+                 [com.sun.mail/javax.mail "1.6.2"]
+                 [commons-codec/commons-codec "1.15"]
+                 [orchestra "2021.01.01-1"]
+
+                 [org.clojure/tools.cli "1.0.194"]]
 
   :main ^:skip-aot portcard-api.core
   :target-path "target/%s"
 
   :plugins [[lein-environ "1.1.0"]
             [cider/cider-nrepl "0.25.4"]
-            [refactor-nrepl "2.5.0"]]
+            [refactor-nrepl "2.5.0"]
+            [lein-exec "0.3.7"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
 

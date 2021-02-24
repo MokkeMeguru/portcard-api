@@ -1,14 +1,22 @@
 (ns portcard-api.infrastructure.handler.signup
   (:require [portcard-api.infrastructure.openapi.users :as openapi-users]
             [portcard-api.usecase.signup :as signup-usecase]
-            [clojure.walk :as w]))
+            [clojure.walk :as w]
+            [portcard-api.domain.errors :as errors]))
+
+(defn ->uname [result]
+  {:uname (-> result :user :uname)})
 
 (def signup
   {:summary "signup with username and firebase id-token"
    :swagger {:security [{:Bearer []}]}
-   :parameters {:body {:uname string?}}
-   :responses {201 {:body {:uname string?}}}
+   :parameters {:body ::openapi-users/signup-parameters}
+   :responses {201 {:body ::openapi-users/signup-responses}}
    :handler (fn [{:keys [headers parameters db]}]
               (let [{{:keys [uname]} :body} parameters
-                    id-token (-> headers w/keywordize-keys :authorization)]
-                (signup-usecase/signup uname id-token db)))})
+                    id-token (-> headers w/keywordize-keys :authorization)
+                    [result err]  (signup-usecase/signup uname id-token db)]
+                (if
+                 (-> err empty? not) err
+                 {:status 201
+                  :body (->uname result)})))})
