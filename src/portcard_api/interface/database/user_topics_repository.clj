@@ -7,6 +7,7 @@
             [portcard-api.domain.base :as base-model]
             [next.jdbc.result-set :as rs]
             [orchestra.spec.test :as st]
+            [clojure.string]
             [next.jdbc.sql :as njs]
             [portcard-api.util :as util]))
 
