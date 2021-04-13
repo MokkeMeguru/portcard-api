@@ -1,6 +1,6 @@
 (ns portcard-api.infrastructure.handler.contact
-  (:require [clojure.spec.alpha :as s]
-            [portcard-api.usecase.post-contact :as post-contact-usecase]
+  (:require [portcard-api.usecase.post-contact :as post-contact-usecase]
+            [clojure.spec.alpha :as s]
             [clojure.walk :as w]
             [taoensso.timbre :as timbre]))
 

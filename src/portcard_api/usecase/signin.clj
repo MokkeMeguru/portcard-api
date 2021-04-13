@@ -1,8 +1,8 @@
 (ns portcard-api.usecase.signin
-  (:require [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.domain.errors :as errors]
-            [portcard-api.util :refer [err->> border-error]]
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.util :refer [err->> border-error]]
             [clojure.spec.alpha :as s]
             [orchestra.spec.test :as st]
             [taoensso.timbre :as timbre]))

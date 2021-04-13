@@ -1,14 +1,14 @@
 (ns portcard-api.interface.database.users-repository
-  (:require [portcard-api.infrastructure.sql.sql]
-            [next.jdbc :as jdbc]
-            [portcard-api.interface.database.utils :as utils]
-            [clojure.spec.alpha :as s]
+  (:require [portcard-api.domain.base :as base-model]
             [portcard-api.domain.users :as user-model]
-            [portcard-api.domain.base :as base-model]
+            [portcard-api.infrastructure.sql.sql]
+            [portcard-api.interface.database.utils :as utils]
             [clj-time.coerce :as tc]
+            [clojure.spec.alpha :as s]
+            [integrant.core :as ig]
+            [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
-            [orchestra.spec.test :as st]
-            [integrant.core :as ig]))
+            [orchestra.spec.test :as st]))
 
 ;; define protocol
 (defprotocol Users

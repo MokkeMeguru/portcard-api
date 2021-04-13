@@ -67,7 +67,8 @@
             [cider/cider-nrepl "0.25.4"]
             [refactor-nrepl "2.5.0"]
             [lein-exec "0.3.7"]
-            [lein-pprint "1.3.2"]]
+            [lein-pprint "1.3.2"]
+            [ns-sort "1.0.0"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
 

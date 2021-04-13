@@ -1,10 +1,10 @@
 (ns portcard-api.interface.database.contacts-repository
-  (:require [portcard-api.interface.database.utils :as utils]
+  (:require [portcard-api.domain.base :as base-model]
+            [portcard-api.domain.contacts :as contact-model]
+            [portcard-api.interface.database.utils :as utils]
             [clojure.spec.alpha :as s]
             [next.jdbc :as jdbc]
-            [next.jdbc.result-set :as rs]
-            [portcard-api.domain.contacts :as contact-model]
-            [portcard-api.domain.base :as base-model]))
+            [next.jdbc.result-set :as rs]))
 
 ;; define protocol
 

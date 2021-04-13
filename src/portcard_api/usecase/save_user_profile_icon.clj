@@ -1,13 +1,13 @@
 (ns portcard-api.usecase.save-user-profile-icon
-  (:require [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.interface.image-db.icons-repository :as icons-repository]
-            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-            [portcard-api.domain.errors :as errors]
+  (:require [portcard-api.domain.errors :as errors]
             [portcard-api.domain.images :as images-domain]
+            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.interface.image-db.icons-repository :as icons-repository]
             [portcard-api.interface.image-processor.core :as image-processor]
             [portcard-api.util :refer [err->> border-error rand-str]]
-            [portcard-api.util :as util]
-            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]))
+            [portcard-api.util :as util]))
 
 (defn user-exist? [user]
   (and (-> user empty? not)

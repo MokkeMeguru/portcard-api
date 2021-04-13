@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.gmail.gmail
-  (:require [integrant.core :as ig]
-            [clojure.spec.alpha :as s]
+  (:require [portcard-api.domain.gmail :as gmail-domain]
             [clojure.java.io :as io]
-            [portcard-api.domain.gmail :as gmail-domain]
+            [clojure.spec.alpha :as s]
+            [integrant.core :as ig]
             [taoensso.timbre :as timbre])
   (:import [com.google.api.services.gmail GmailScopes]
            [com.google.api.client.json JsonFactory]

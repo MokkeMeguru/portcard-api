@@ -1,8 +1,7 @@
 (ns portcard-api.server
-  (:require
-   [taoensso.timbre :as timbre]
-   [integrant.core :as ig]
-   [ring.adapter.jetty :as jetty]))
+  (:require [integrant.core :as ig]
+            [ring.adapter.jetty :as jetty]
+            [taoensso.timbre :as timbre]))
 
 (defmethod ig/init-key ::server [_ {:keys [env router port]}]
   (timbre/info "server is running in port" port)

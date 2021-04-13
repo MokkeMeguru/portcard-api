@@ -1,13 +1,12 @@
 (ns portcard-api.infrastructure.sql.sql
-  (:require [integrant.core :as ig]
-            [hikari-cp.core :as hikari-cp]
+  (:require [hikari-cp.core :as hikari-cp]
+            [integrant.core :as ig]
             [taoensso.timbre :as timbre])
-  (:import
-   [javax.sql DataSource]
-   [net.ttddyy.dsproxy QueryInfo]
-   [net.ttddyy.dsproxy.proxy ParameterSetOperation]
-   [net.ttddyy.dsproxy.support ProxyDataSource]
-   [net.ttddyy.dsproxy.listener QueryExecutionListener]))
+  (:import [javax.sql DataSource]
+           [net.ttddyy.dsproxy QueryInfo]
+           [net.ttddyy.dsproxy.proxy ParameterSetOperation]
+           [net.ttddyy.dsproxy.support ProxyDataSource]
+           [net.ttddyy.dsproxy.listener QueryExecutionListener]))
 
 (defrecord Boundary [spec])
 

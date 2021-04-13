@@ -1,6 +1,6 @@
 (ns portcard-api.domain.user-topics
-  (:require [clojure.spec.alpha :as s]
-            [portcard-api.domain.users :as user-model]))
+  (:require [portcard-api.domain.users :as user-model]
+            [clojure.spec.alpha :as s]))
 
 (s/def ::uid uuid?)
 (s/def ::user_uid ::user-model/uid)

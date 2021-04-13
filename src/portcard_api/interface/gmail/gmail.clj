@@ -1,8 +1,8 @@
 (ns portcard-api.interface.gmail.gmail
-  (:require [portcard-api.infrastructure.gmail.gmail :as  gmail-infrastructure]
-            [clojure.java.io :as io]
+  (:require [portcard-api.domain.gmail :as gmail-model]
+            [portcard-api.infrastructure.gmail.gmail :as gmail-infrastructure]
             [portcard-api.interface.gmail.utils :as gmail-utils]
-            [portcard-api.domain.gmail :as gmail-model]
+            [clojure.java.io :as io]
             [clojure.spec.alpha :as s]))
 
 

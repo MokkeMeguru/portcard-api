@@ -1,11 +1,11 @@
 (ns portcard-api.interface.database.user-profiles-contacts-repository
-  (:require [portcard-api.infrastructure.sql.sql]
+  (:require [portcard-api.domain.base :as base-model]
+            [portcard-api.domain.users :as user-model]
+            [portcard-api.infrastructure.sql.sql]
             [portcard-api.interface.database.utils :as utils]
+            [clojure.spec.alpha :as s]
             [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
-            [clojure.spec.alpha :as s]
-            [portcard-api.domain.users :as user-model]
-            [portcard-api.domain.base :as base-model]
             [orchestra.spec.test :as st]))
 
 ;; define protocol

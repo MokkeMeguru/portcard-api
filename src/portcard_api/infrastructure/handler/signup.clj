@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.handler.signup
-  (:require [portcard-api.infrastructure.openapi.users :as openapi-users]
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.infrastructure.openapi.users :as openapi-users]
             [portcard-api.usecase.signup :as signup-usecase]
-            [clojure.walk :as w]
-            [portcard-api.domain.errors :as errors]))
+            [clojure.walk :as w]))
 
 (defn ->uname [result]
   {:uname (-> result :user :uname)})

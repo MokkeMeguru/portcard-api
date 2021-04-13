@@ -1,9 +1,9 @@
 (ns portcard-api.usecase.get-user-icon
-  (:require [portcard-api.interface.database.users-repository :as users-repository]
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.image-db.icons-repository :as icons-repository]
-            [portcard-api.util :refer [err->> border-error]]
-            [portcard-api.domain.errors :as errors]
-            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]))
+            [portcard-api.util :refer [err->> border-error]]))
 
 (defn user-exist? [user]
   (and (-> user empty? not)

@@ -1,13 +1,13 @@
 (ns portcard-api.usecase.get-user-profile
-  (:require [clojure.spec.alpha :as s]
-            [portcard-api.util :refer [err->> border-error]]
-            [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.interface.database.user-profiles-contacts-repository :as user-profiles-contacts-repository]
-            [portcard-api.domain.errors :as errors]
-            [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
+            [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
             [portcard-api.interface.database.user-role-links-repository :as user-role-links-repository]
-            [portcard-api.domain.user-roles :as user-roles-model]))
+            [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.util :refer [err->> border-error]]
+            [clojure.spec.alpha :as s]))
 
 (defn get-user-role-links [{:keys [db uid] :as role}]
   (let [[user-role-links err] (err->> {:function #(user-role-links-repository/get-links-by-role-id db uid)

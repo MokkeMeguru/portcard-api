@@ -1,6 +1,6 @@
 (ns portcard-api.infrastructure.image-db.image-db
-  (:require [integrant.core :as ig]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
+            [integrant.core :as ig]
             [taoensso.timbre :as timbre]))
 
 (defrecord LocalImageBoundary [spec])

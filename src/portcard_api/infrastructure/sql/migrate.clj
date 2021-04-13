@@ -1,12 +1,13 @@
 (ns portcard-api.infrastructure.sql.migrate
-  (:require [clojure.java.io :as io]
-            [taoensso.timbre :as timbre]
-            [ragtime.jdbc :as rjdbc]
-            [clj-time.coerce :as tc]
-            [ragtime.repl :as ragr]
+  (:require [clj-time.coerce :as tc]
             [clj-time.core :as time]
+            [clojure.java.io :as io]
+            [clojure.string :as string]
+            [environ.core :refer [env]]
             [integrant.core :as ig]
-            [clojure.string :as string]))
+            [ragtime.jdbc :as rjdbc]
+            [ragtime.repl :as ragr]
+            [taoensso.timbre :as timbre]))
 
 (def migration-option
   {:encoding "UTF-8"
@@ -34,8 +35,8 @@
       nil)))
 
 (defn rollback! []
-  (let [config {:datastore (rjdbc/sql-database {:connection-uri (:database-url environ.core/env)})
-                :migrations (rjdbc/load-resources (:migration-folder environ.core/env))}]
+  (let [config {:datastore (rjdbc/sql-database {:connection-uri (:database-url env)})
+                :migrations (rjdbc/load-resources (:migration-folder env))}]
     (ragr/rollback config)))
 
 ;; (rollback!)

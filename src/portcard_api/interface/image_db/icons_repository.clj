@@ -1,8 +1,8 @@
 (ns portcard-api.interface.image-db.icons-repository
-  (:require [portcard-api.interface.database.utils :as utils]
-            [clojure.java.io :as io]
+  (:require [portcard-api.infrastructure.image-db.image-db]
+            [portcard-api.interface.database.utils :as utils]
             [portcard-api.interface.image-db.utils :refer [file-extension]]
-            [portcard-api.infrastructure.image-db.image-db]
+            [clojure.java.io :as io]
             [taoensso.timbre :as timbre])
   (:import javax.imageio.ImageIO))
 

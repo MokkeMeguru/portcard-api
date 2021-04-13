@@ -1,10 +1,9 @@
 (ns portcard-api.usecase.delete-user-topic
-  (:require
-   [portcard-api.util :refer [err->> border-error rand-str]]
-   [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-   [portcard-api.interface.database.user-topics-repository :as user-topics-repository]
-   [portcard-api.domain.errors :as errors]
-   [portcard-api.interface.image-db.topic-captures-repository :as topic-captures-repository]))
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.interface.database.user-topics-repository :as user-topics-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.interface.image-db.topic-captures-repository :as topic-captures-repository]
+            [portcard-api.util :refer [err->> border-error rand-str]]))
 
 (defn check-id-token [{:keys [id-token db] :as m}]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]

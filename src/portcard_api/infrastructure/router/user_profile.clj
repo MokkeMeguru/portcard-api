@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.router.user-profile
-  (:require [clojure.walk :as w]
-            [reitit.ring.middleware.multipart :as multipart]
+  (:require [portcard-api.infrastructure.handler.user-profile :refer [post-user-profile get-user-profile]]
             [portcard-api.infrastructure.handler.user-profile-icon :refer [get-user-profile-icon post-user-profile-icon]]
-            [portcard-api.infrastructure.handler.user-profile :refer [post-user-profile get-user-profile]]))
+            [clojure.walk :as w]
+            [reitit.ring.middleware.multipart :as multipart]))
 
 (defn user-profile-router [env]
   ["/user-profile"

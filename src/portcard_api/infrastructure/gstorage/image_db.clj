@@ -9,3 +9,5 @@
 
 
 ;;   )
+(defn hello []
+  (println 1))

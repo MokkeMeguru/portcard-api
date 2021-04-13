@@ -1,15 +1,15 @@
 (ns portcard-api.interface.database.user-topics-repository
-  (:require [portcard-api.interface.database.utils :as utils]
+  (:require [portcard-api.domain.base :as base-model]
             [portcard-api.domain.user-topics :as user-topic-model]
-            [next.jdbc :as jdbc]
-            [clojure.spec.alpha :as s]
             [portcard-api.domain.users :as user-model]
-            [portcard-api.domain.base :as base-model]
-            [next.jdbc.result-set :as rs]
-            [orchestra.spec.test :as st]
+            [portcard-api.interface.database.utils :as utils]
+            [portcard-api.util :as util]
+            [clojure.spec.alpha :as s]
             [clojure.string]
+            [next.jdbc :as jdbc]
+            [next.jdbc.result-set :as rs]
             [next.jdbc.sql :as njs]
-            [portcard-api.util :as util]))
+            [orchestra.spec.test :as st]))
 
 ;; define protocol
 (defprotocol UserTopics

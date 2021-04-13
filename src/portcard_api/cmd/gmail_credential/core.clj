@@ -15,5 +15,3 @@
       ;; help (println summary)
       cron-jobs (core/start "cmd/gmail_credential/config_cron.edn")
       :else (core/start "cmd/gmail_credential/config.edn"))))
-
-(-main)

@@ -3,10 +3,10 @@
            (com.google.firebase.database DatabaseReference FirebaseDatabase)
            (com.google.auth.oauth2 GoogleCredentials)
            (com.google.firebase.auth FirebaseAuth))
-  (:require [clojure.java.io :as io]
-            [clojure.walk :as w]
+  (:require [portcard-api.domain.errors :as errors]
             [portcard-api.util :refer [err->>]]
-            [portcard-api.domain.errors :as errors]))
+            [clojure.java.io :as io]
+            [clojure.walk :as w]))
 
 (defprotocol Auth
   (get-user-uid [id-token]))

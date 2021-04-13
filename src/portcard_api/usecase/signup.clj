@@ -1,10 +1,9 @@
 (ns portcard-api.usecase.signup
-  (:require
-   [portcard-api.util :refer [err->> border-error]]
-   [portcard-api.domain.errors :as errors]
-   [portcard-api.interface.database.users-repository :as users-repository]
-   [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-   [clojure.spec.alpha :as s]))
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.util :refer [err->> border-error]]
+            [clojure.spec.alpha :as s]))
 
 (defn decode-id-token [{:keys [id-token] :as m}]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]

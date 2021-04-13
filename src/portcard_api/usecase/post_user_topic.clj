@@ -1,16 +1,16 @@
 (ns portcard-api.usecase.post-user-topic
-  (:require [portcard-api.util :refer [err->> border-error rand-str]]
-            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-            [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.interface.image-db.topic-captures-repository :as topic-captures-repository]
-            [portcard-api.domain.errors :as errors]
-            [portcard-api.interface.image-processor.core :as image-processor]
+  (:require [portcard-api.domain.errors :as errors]
             [portcard-api.domain.images :as images-domain]
-            [portcard-api.interface.database.user-topics-repository :as user-topics-repository]
-            [portcard-api.domain.user-topics :as user-topic-model]
             [portcard-api.domain.user-roles :as user-roles-model]
-            [taoensso.timbre :as timbre]
-            [portcard-api.util :as util]))
+            [portcard-api.domain.user-topics :as user-topic-model]
+            [portcard-api.interface.database.user-topics-repository :as user-topics-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.interface.image-db.topic-captures-repository :as topic-captures-repository]
+            [portcard-api.interface.image-processor.core :as image-processor]
+            [portcard-api.util :refer [err->> border-error rand-str]]
+            [portcard-api.util :as util]
+            [taoensso.timbre :as timbre]))
 
 (def max-topic-image-size 512)
 

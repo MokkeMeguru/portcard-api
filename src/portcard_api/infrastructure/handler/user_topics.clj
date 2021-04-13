@@ -1,18 +1,18 @@
 (ns portcard-api.infrastructure.handler.user-topics
-  (:require [clojure.spec.alpha :as s]
-            [portcard-api.usecase.get-user-topics :as get-user-topics-usecase]
-            [portcard-api.usecase.get-latest-user-topics :as get-latest-user-topics-usecase]
-            [portcard-api.usecase.post-user-topic :as post-user-topic-usecase]
-            [portcard-api.usecase.get-user-topic-capture :as get-user-topic-capture-usecase]
-            [portcard-api.usecase.delete-user-topic :as delete-user-topic-usecase]
-            [reitit.ring.middleware.multipart :as multipart]
-            [spec-tools.data-spec :as ds]
-            [clojure.walk :as w]
-            [portcard-api.interface.database.utils :as utils]
-            [portcard-api.util :as util]
+  (:require [portcard-api.domain.errors :as errors]
             [portcard-api.domain.user-roles :as user-roles-model]
+            [portcard-api.interface.database.utils :as utils]
+            [portcard-api.usecase.delete-user-topic :as delete-user-topic-usecase]
+            [portcard-api.usecase.get-latest-user-topics :as get-latest-user-topics-usecase]
+            [portcard-api.usecase.get-user-topic-capture :as get-user-topic-capture-usecase]
+            [portcard-api.usecase.get-user-topics :as get-user-topics-usecase]
+            [portcard-api.usecase.post-user-topic :as post-user-topic-usecase]
+            [portcard-api.util :as util]
             [clojure.java.io :as io]
-            [portcard-api.domain.errors :as errors]))
+            [clojure.spec.alpha :as s]
+            [clojure.walk :as w]
+            [reitit.ring.middleware.multipart :as multipart]
+            [spec-tools.data-spec :as ds]))
 
 ;; from int path
 ;; take int path

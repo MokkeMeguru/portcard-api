@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.env
   (:require [environ.core :refer [env]]
-            [taoensso.timbre :as timbre]
             [integrant.core :as ig]
-            [orchestra.spec.test :as st])
+            [orchestra.spec.test :as st]
+            [taoensso.timbre :as timbre])
   (:import (com.google.auth.oauth2 GoogleCredentials)))
 
 (defmethod ig/init-key ::env [_ _]

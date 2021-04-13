@@ -1,6 +1,6 @@
 (ns portcard-api.interface.image-db.topic-captures-repository
-  (:require [clojure.java.io :as io]
-            [portcard-api.interface.image-db.utils :refer [file-extension]])
+  (:require [portcard-api.interface.image-db.utils :refer [file-extension]]
+            [clojure.java.io :as io])
   (:import javax.imageio.ImageIO))
 
 (defprotocol TopicCaptures

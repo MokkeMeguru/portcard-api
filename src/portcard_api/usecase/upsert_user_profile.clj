@@ -1,12 +1,12 @@
 (ns portcard-api.usecase.upsert-user-profile
-  (:require [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-            [portcard-api.interface.database.users-repository :as users-repository]
+  (:require [portcard-api.domain.errors :as errors]
+            [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.interface.database.user-profiles-contacts-repository :as user-profiles-contacts-repository]
-            [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
             [portcard-api.interface.database.user-role-links-repository :as user-role-links-repository]
-            [portcard-api.util :refer [err->> border-error remove-empty]]
-            [portcard-api.domain.errors :as errors]
-            [portcard-api.domain.user-roles :as user-roles-model]))
+            [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.util :refer [err->> border-error remove-empty]]))
 
 (defn user-already-exist? [user]
   (not (empty? user)))
