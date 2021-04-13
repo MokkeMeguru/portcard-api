@@ -23,14 +23,15 @@
       (not (user-exist? user)) [nil errors/user-not-found]
       :else [(assoc m :user user) nil])))
 
-(defn ->icon-image [{:keys [icon-image] :as m}]
-  (try [(assoc m :icon-image (image-processor/->icon icon-image images-domain/icon-max-size)) nil]
+(defn ->icon-image-buffer [{:keys [icon-image-stream] :as m}]
+  (try [(assoc m :icon-image-buffer
+               (image-processor/->icon icon-image-stream images-domain/icon-max-size)) nil]
        (catch Exception e
          [nil (errors/unknown-error (.getMessage e))])))
 
-(defn save-icon-image-into-image-db [{:keys [icon-image image-db] :as m}]
+(defn save-icon-image-into-image-db [{:keys [icon-image-buffer image-db] :as m}]
   (let [icon-blob (str (rand-str images-domain/icon-blob-length) ".png")
-        [status err] (err->> {:function #(icons-repository/insert-icon image-db icon-image icon-blob)
+        [status err] (err->> {:function #(icons-repository/insert-icon image-db icon-image-buffer icon-blob)
                               :error-wrapper errors/database-error}
                              border-error)]
     (cond
@@ -66,15 +67,22 @@
       [(assoc m :user-id user-id) nil]
       [nil cause])))
 
-(defn save-user-profile-icon [{:keys [icon-image image-db db id-token]}]
+(defn close-image-icon-stream [{:keys [icon-image-stream] :as m}]
+  (try
+    (.close icon-image-stream)
+    [m nil]
+    (finally [m nil])))
+
+(defn save-user-profile-icon [{:keys [icon-image-stream image-db db id-token]}]
   (err->>
    {:id-token id-token
     :image-db image-db
-    :icon-image icon-image
+    :icon-image-stream icon-image-stream
     :db db}
    check-token
    check-user-exist
-   ->icon-image
+   ->icon-image-buffer
    delete-icon
    save-icon-image-into-image-db
-   save-icon-image-into-sql-db))
+   save-icon-image-into-sql-db
+   close-image-icon-stream))

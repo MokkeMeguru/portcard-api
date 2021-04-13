@@ -45,6 +45,9 @@
                  ;; for migration
                  [ragtime "0.8.0"]
 
+                 ;; for google cloud
+                 [com.google.cloud/google-cloud-storage "1.113.14"]
+
                  ;; for others
                  [camel-snake-kebab "0.4.2"]
 
@@ -63,7 +66,8 @@
   :plugins [[lein-environ "1.1.0"]
             [cider/cider-nrepl "0.25.4"]
             [refactor-nrepl "2.5.0"]
-            [lein-exec "0.3.7"]]
+            [lein-exec "0.3.7"]
+            [lein-pprint "1.3.2"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
 

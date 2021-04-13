@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # HOW TO USE; source env.sh
-SECRET_ENV=.env.sh
+SECRET_ENV=.env
 
 export GOOGLE_APPLICATION_CREDENTIALS=resources/secret.json
 

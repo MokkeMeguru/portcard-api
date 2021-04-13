@@ -2,6 +2,7 @@
   (:require [portcard-api.interface.database.utils :as utils]
             [clojure.java.io :as io]
             [portcard-api.interface.image-db.utils :refer [file-extension]]
+            [portcard-api.infrastructure.image-db.image-db]
             [taoensso.timbre :as timbre])
   (:import javax.imageio.ImageIO))
 
@@ -29,7 +30,7 @@
       (if (.isFile file)
         (do
           (timbre/info "query accepted")
-          {:file file})
+          {:image-stream (io/input-stream file)})
         {})))
   (delete-icon [{:keys [spec]} blob]
     (timbre/info "image-db/query delete the file " blob)

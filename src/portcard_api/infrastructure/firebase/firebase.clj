@@ -11,14 +11,14 @@
 (defmethod ig/init-key ::firebase
   [_ {:keys [env]}]
   (let [firebase-credentials (:firebase-credentials env)
-        firebase-database (:firebase-database env)
+        ;; firebase-database (:firebase-database env)
         firebase-options (FirebaseOptions/builder)
         firebaseApp (-> firebase-options
                         (.setCredentials firebase-credentials)
-                        (.setDatabaseUrl firebase-database)
+                        ;; (.setDatabaseUrl firebase-database)
                         .build
                         FirebaseApp/initializeApp)]
-    (timbre/info "connectiong to " firebase-database " for firebase")
+    ;; (timbre/info "connectiong to " firebase-database " for firebase")
     (->FirebaseBoundary firebaseApp)))
 
 (defmethod ig/halt-key! ::firebase

@@ -19,3 +19,5 @@ resources/_secret.txt
 /resources/tokens.tar.gz
 /resources/tokens/
 /image-db/captures/*.png
+/resources/sample.png
+/.env

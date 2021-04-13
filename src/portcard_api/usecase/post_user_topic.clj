@@ -31,17 +31,17 @@
       (:is_deleted user) [nil errors/user-is-deleted]
       :else [(-> m (assoc :user user)) nil])))
 
-(defn ->topic-image [{:keys [user-id topic topic-image] :as m}]
-  (try [(assoc m :topic-image
-               (image-processor/->climb-image topic-image max-topic-image-size))
+(defn ->topic-image-buffer [{:keys [user-id topic topic-image-stream] :as m}]
+  (try [(assoc m :topic-image-buffer
+               (image-processor/->climb-image topic-image-stream max-topic-image-size))
         nil]
        (catch Exception e
          (timbre/warn "invalid image is uploaded from " user-id ". topic: " topic)
          [nil (errors/unknown-error (.getMessage e))])))
 
-(defn insert-topic-image [{:keys [user topic topic-image image-db] :as m}]
+(defn insert-topic-image [{:keys [topic-image-buffer image-db] :as m}]
   (let [topic-image-blob (str (rand-str images-domain/icon-blob-length) ".png")
-        [status err] (err->> {:function #(topic-captures-repository/insert-capture image-db topic-image topic-image-blob)
+        [status err] (err->> {:function #(topic-captures-repository/insert-capture image-db topic-image-buffer topic-image-blob)
                               :error-wrapper errors/database-error}
                              border-error)]
     (cond
@@ -65,8 +65,7 @@
                 :image_blob topic-image-blob})]
     [(assoc m :topic topic) nil]))
 
-(defn insert-topic [{:keys [user db topic] :as m}]
-  (println topic)
+(defn insert-topic [{:keys [db topic] :as m}]
   (let [[status err] (err->> {:function #(user-topics-repository/create-user-topic db topic)
                               :error-wrapper errors/database-error}
                              border-error)]
@@ -74,16 +73,23 @@
       (not (nil? err)) [nil err]
       :else [(assoc m :result status) nil])))
 
-(defn post-user-topic [id-token topic topic-image db image-db]
+(defn close-topic-image-stream [{:keys [topic-image-stream] :as m}]
+  (try
+    (.close topic-image-stream)
+    [m nil]
+    (finally [m nil])))
+
+(defn post-user-topic [id-token topic topic-image-stream db image-db]
   (err->>
    {:id-token id-token
     :db db
     :topic topic
-    :topic-image topic-image
+    :topic-image-stream topic-image-stream
     :image-db image-db}
    check-id-token
    check-user-exist
-   ->topic-image
+   ->topic-image-buffer
    insert-topic-image
    ->user-topic
-   insert-topic))
+   insert-topic
+   close-topic-image-stream))

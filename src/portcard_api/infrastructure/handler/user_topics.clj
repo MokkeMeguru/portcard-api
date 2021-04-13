@@ -106,10 +106,12 @@
    :handler (fn [{:keys [parameters headers db image-db]}]
               (let [{{:keys [file title category description link]} :multipart} parameters
                     id-token (-> headers w/keywordize-keys :authorization)
-                    topic-image (:tempfile file)
+                    topic-image-stream (io/input-stream (:tempfile file))
                     topic (->topic title category description link)
-                    [result err] (post-user-topic-usecase/post-user-topic id-token topic topic-image db image-db)]
-                {:status 201}))})
+                    [result err] (post-user-topic-usecase/post-user-topic id-token topic topic-image-stream db image-db)]
+                (cond
+                  err err
+                  :else {:status 201})))})
 
 ;; uid string path
 
@@ -149,12 +151,9 @@
    :handler (fn [{:keys [parameters db image-db]}]
               (let [{{:keys [user-id topic-id image-blob]} :path} parameters
                     topic-id (java.util.UUID/fromString topic-id)
-                    [{{:keys [file]} :image} err] (get-user-topic-capture-usecase/get-user-topic-capture user-id topic-id image-blob db image-db)
-                    [input-stream input-stream-err] (try [(io/input-stream file) nil]
-                                                         (catch Exception e [nil (errors/unknown-error (.getMessage e))]))]
+                    [{{:keys [image-stream]} :image} err] (get-user-topic-capture-usecase/get-user-topic-capture user-id topic-id image-blob db image-db)]
                 (cond
                   (not (nil? err)) err
-                  (not (nil? input-stream-err)) input-stream-err
                   :else {:status 200
                          :headers {"Content-type" "image/png"}
-                         :body (io/input-stream file)})))})
+                         :body image-stream})))})

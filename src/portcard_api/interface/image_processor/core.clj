@@ -39,14 +39,14 @@
       image)))
 
 (defn ->icon
-  [^java.io.File source ^Integer icon-size]
+  [^java.io.InputStream source ^Integer icon-size]
   (-> source
       ImageIO/read
       center-crop-image
       (scale-image icon-size)))
 
 (defn ->climb-image
-  [^java.io.File source ^Integer max-size]
+  [^java.io.InputStream source ^Integer max-size]
   (let [res (-> source
                 ImageIO/read
                 (climb-image max-size))]

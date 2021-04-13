@@ -21,7 +21,7 @@
   (get-capture [{:keys [spec]} blob]
     (let [file (io/file (:parent spec) "captures" blob)]
       (if (.isFile file)
-        {:file file}
+        {:image-stream (io/input-stream file)}
         {})))
   (delete-capture [{:keys [spec]} blob]
     (let [file (io/file (:parent spec) "captures" blob)]
