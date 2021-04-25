@@ -1,12 +1,12 @@
 (ns portcard-api.interface.firebase.auth
-  (:import (com.google.firebase FirebaseApp FirebaseOptions)
-           (com.google.firebase.database DatabaseReference FirebaseDatabase)
-           (com.google.auth.oauth2 GoogleCredentials)
-           (com.google.firebase.auth FirebaseAuth))
-  (:require [portcard-api.domain.errors :as errors]
-            [portcard-api.util :refer [err->>]]
-            [clojure.java.io :as io]
-            [clojure.walk :as w]))
+  (:import (com.google.auth.oauth2 GoogleCredentials)
+           (com.google.firebase FirebaseApp FirebaseOptions)
+           (com.google.firebase.auth FirebaseAuth)
+           (com.google.firebase.database DatabaseReference FirebaseDatabase))
+  (:require [clojure.java.io :as io]
+            [clojure.walk :as w]
+            [portcard-api.domain.errors :as errors]
+            [portcard-api.util :refer [err->>]]))
 
 (defprotocol Auth
   (get-user-uid [id-token]))

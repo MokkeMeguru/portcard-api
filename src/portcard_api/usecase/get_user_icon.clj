@@ -3,7 +3,7 @@
             [portcard-api.interface.database.user-profiles-icons-repository :as user-profiles-icons-repository]
             [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.image-db.icons-repository :as icons-repository]
-            [portcard-api.util :refer [err->> border-error]]))
+            [portcard-api.util :refer [border-error err->>]]))
 
 (defn user-exist? [user]
   (and (-> user empty? not)
@@ -34,6 +34,8 @@
                     {:function #(icons-repository/get-icon image-db icon-blob)
                      :error-wrapper errors/database-error}
                     border-error)]
+    (println "icon is" icon)
+    (println "icon is : " (:image-stream icon))
     (cond
       (not (nil? err)) [nil err]
       (empty? icon) [nil errors/icon-not-found]

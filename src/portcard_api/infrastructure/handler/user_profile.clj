@@ -1,12 +1,12 @@
 (ns portcard-api.infrastructure.handler.user-profile
-  (:require [portcard-api.domain.user-roles :as user-roles-model]
+  (:require [clojure.spec.alpha :as s]
+            [clojure.walk :as w]
+            [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
             [portcard-api.interface.database.utils :as utils]
             [portcard-api.usecase.get-user-profile :as get-user-profile-usecase]
             [portcard-api.usecase.upsert-user-profile :as upsert-user-profile-usecase]
             [portcard-api.util :as util]
-            [clojure.spec.alpha :as s]
-            [clojure.walk :as w]
             [taoensso.timbre :as timbre]))
 
 (defn ->profile-role-link [{:keys [link_category_name link_blob]}]

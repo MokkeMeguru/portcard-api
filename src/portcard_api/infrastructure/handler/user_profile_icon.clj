@@ -1,9 +1,9 @@
 (ns portcard-api.infrastructure.handler.user-profile-icon
-  (:require [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
+  (:require [clojure.java.io :as io]
+            [clojure.walk :as w]
+            [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
             [portcard-api.usecase.get-user-icon :as get-user-icon-usecase]
             [portcard-api.usecase.save-user-profile-icon :as save-user-profile-icon-usecase]
-            [clojure.java.io :as io]
-            [clojure.walk :as w]
             [reitit.ring.middleware.multipart :as multipart]))
 
 (def get-user-profile-icon

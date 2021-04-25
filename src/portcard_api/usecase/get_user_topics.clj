@@ -3,7 +3,7 @@
             [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.interface.database.user-topics-repository :as user-topics-repository]
             [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.util :refer [err->> border-error]]
+            [portcard-api.util :refer [border-error err->>]]
             [portcard-api.util :as util]))
 
 (defn user-exist? [{:keys [uname db] :as m}]

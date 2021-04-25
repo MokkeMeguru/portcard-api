@@ -1,7 +1,7 @@
 (ns portcard-api.usecase.check-account-name
   (:require [portcard-api.domain.errors :as errors]
             [portcard-api.interface.database.users-repository :as users-repository]
-            [portcard-api.util :refer [err->> border-error]]))
+            [portcard-api.util :refer [border-error err->>]]))
 
 (defn check-user-exist [{:keys [db uname] :as m}]
   (let [[user err] (err->> {:function #(users-repository/get-user db :uname uname)

@@ -1,6 +1,6 @@
 (ns portcard-api.domain.contacts
-  (:require [portcard-api.domain.users :as user-model]
-            [clojure.spec.alpha :as s]))
+  (:require [clojure.spec.alpha :as s]
+            [portcard-api.domain.users :as user-model]))
 
 (def email-regex  #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
 (def satisfy-email-regex? (partial re-matches email-regex))

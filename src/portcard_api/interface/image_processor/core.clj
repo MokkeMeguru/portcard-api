@@ -1,9 +1,9 @@
 (ns portcard-api.interface.image-processor.core
-  (:import [java.awt.image AffineTransformOp BufferedImage]
-           [java.io ByteArrayOutputStream FileInputStream File]
-           java.awt.geom.AffineTransform
-           javax.imageio.ImageIO
-           java.net.URLEncoder)
+  (:import java.awt.geom.AffineTransform
+           [java.awt.image AffineTransformOp BufferedImage]
+           [java.io ByteArrayOutputStream File FileInputStream]
+           java.net.URLEncoder
+           javax.imageio.ImageIO)
   (:require [clojure.java.io :as io]))
 
 (defn scale

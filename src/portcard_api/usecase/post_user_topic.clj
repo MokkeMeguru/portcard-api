@@ -8,7 +8,7 @@
             [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
             [portcard-api.interface.image-db.topic-captures-repository :as topic-captures-repository]
             [portcard-api.interface.image-processor.core :as image-processor]
-            [portcard-api.util :refer [err->> border-error rand-str]]
+            [portcard-api.util :refer [border-error err->> rand-str]]
             [portcard-api.util :as util]
             [taoensso.timbre :as timbre]))
 

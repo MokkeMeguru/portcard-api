@@ -15,6 +15,11 @@ npm install --save react-firebaseui
 
 * server run
 export GOOGLE_APPLICATION_CREDENTIALS="resources/secrets.json"
+lein with-profile dev repl
+
+or
+
+CONFIG_FILE=resources/cloud_config.edn lein with-profile cloud repl
 
 * how to add one-shot command
 1. write resources/cmd/xxx/config.edn

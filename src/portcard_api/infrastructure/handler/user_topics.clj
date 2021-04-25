@@ -1,5 +1,8 @@
 (ns portcard-api.infrastructure.handler.user-topics
-  (:require [portcard-api.domain.errors :as errors]
+  (:require [clojure.java.io :as io]
+            [clojure.spec.alpha :as s]
+            [clojure.walk :as w]
+            [portcard-api.domain.errors :as errors]
             [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.interface.database.utils :as utils]
             [portcard-api.usecase.delete-user-topic :as delete-user-topic-usecase]
@@ -8,9 +11,6 @@
             [portcard-api.usecase.get-user-topics :as get-user-topics-usecase]
             [portcard-api.usecase.post-user-topic :as post-user-topic-usecase]
             [portcard-api.util :as util]
-            [clojure.java.io :as io]
-            [clojure.spec.alpha :as s]
-            [clojure.walk :as w]
             [reitit.ring.middleware.multipart :as multipart]
             [spec-tools.data-spec :as ds]))
 

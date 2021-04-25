@@ -1,25 +1,24 @@
 (ns portcard-api.domain.gcs
   (:require [clojure.spec.alpha :as s])
-  (:import (com.google.common.io ByteStreams)
-           (java.io InputStream)
-           (com.google.cloud.storage
-            BlobId
-            Storage$BlobListOption
-            BlobInfo
-            Storage$BlobWriteOption
+  (:import [com.google.cloud.storage
             Blob$BlobSourceOption
-            Bucket BucketInfo Storage StorageOptions
+            BlobId
+            BlobInfo
+            Bucket
+            Bucket$Builder
+            BucketInfo Storage Storage$BlobListOption Storage$BlobWriteOption
             Storage$BucketGetOption
             Storage$BucketListOption
-            Bucket$Builder
-            StorageException)
+            StorageException
+            StorageOptions]
+           [com.google.common.io ByteStreams]
 
-           (com.google.common.io ByteStreams)
-           (java.nio.channels Channels)))
+           [java.io InputStream]
+           [java.nio.channels Channels]))
 
-(s/def :temp-file/prefix (s/and string? #(< 3 (count %))))
-(s/def :temp-file/suffix (s/and string?))
-(s/def ::temp-file-config (s/keys :req-un [:temp-file/prefix :temp-file/suffix]))
+(s/def ::prefix (s/and string? #(< 3 (count %))))
+(s/def ::suffix (s/and string?))
+(s/def ::temp-file-config (s/keys :req-un [::prefix ::suffix]))
 
 
 ;; (s/def ::storage-options (partial instance? StorageOptions))

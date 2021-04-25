@@ -1,0 +1,23 @@
+{:portcard-api.infrastructure.env/env {}
+ :portcard-api.infrastructure.firebase.firebase/firebase
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.sql.migrate/migrate
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.sql.sql/sql
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :firebase #ig/ref :portcard-api.infrastructure.firebase.firebase/firebase
+  :migrate #ig/ref :portcard-api.infrastructure.sql.migrate/migrate}
+
+ :portcard-api.infrastructure.gmail.gmail/gmail
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.gstorage.image-db/image-db
+ {:env #ig/ref :portcard-api.infrastructure.env/env}
+
+ :portcard-api.infrastructure.router.core/router
+ {:env #ig/ref :portcard-api.infrastructure.env/env
+  :db #ig/ref :portcard-api.infrastructure.sql.sql/sql
+  :image-db #ig/ref :portcard-api.infrastructure.gstorage.image-db/image-db
+  :gmail-service #ig/ref :portcard-api.infrastructure.gmail.gmail/gmail}}

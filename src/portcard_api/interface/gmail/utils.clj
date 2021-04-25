@@ -3,27 +3,27 @@
   "
 
     (:import
-     [com.google.api.services.gmail GmailScopes]
-     [com.google.api.client.json JsonFactory]
-     [com.google.api.client.json.jackson2 JacksonFactory]
-     [com.google.api.client.http.javanet NetHttpTransport]
-     [com.google.api.client.googleapis.javanet GoogleNetHttpTransport]
+     [com.google.api.client.auth.oauth2 Credential]
      [com.google.api.client.extensions.java6.auth.oauth2 AuthorizationCodeInstalledApp]
+     [com.google.api.client.extensions.jetty.auth.oauth2 LocalServerReceiver]
      [com.google.api.client.googleapis.auth.oauth2 GoogleAuthorizationCodeFlow]
      [com.google.api.client.googleapis.auth.oauth2 GoogleAuthorizationCodeFlow$Builder]
-     [com.google.api.client.util.store FileDataStoreFactory]
      [com.google.api.client.googleapis.auth.oauth2 GoogleClientSecrets]
-     [com.google.api.client.extensions.jetty.auth.oauth2 LocalServerReceiver]
+     [com.google.api.client.googleapis.javanet GoogleNetHttpTransport]
+     [com.google.api.client.http.javanet NetHttpTransport]
+     [com.google.api.client.json JsonFactory]
+     [com.google.api.client.json.jackson2 JacksonFactory]
+     [com.google.api.client.util.store FileDataStoreFactory]
 
-     [java.util Properties]
-     [javax.mail.internet MimeMessage]
-     [javax.mail Session]
-     [javax.mail.internet InternetAddress]
-     [javax.mail Message$RecipientType]
-     [org.apache.commons.codec.binary Base64]
+     [com.google.api.services.gmail GmailScopes]
      [com.google.api.services.gmail.model Message]
-     [com.google.api.client.auth.oauth2 Credential]
-     [com.google.api.services.gmail.model Label]))
+     [com.google.api.services.gmail.model Label]
+     [java.util Properties]
+     [javax.mail Session]
+     [javax.mail Message$RecipientType]
+     [javax.mail.internet MimeMessage]
+     [javax.mail.internet InternetAddress]
+     [org.apache.commons.codec.binary Base64]))
 
 (def charset "utf-8")
 (def encode "base64")

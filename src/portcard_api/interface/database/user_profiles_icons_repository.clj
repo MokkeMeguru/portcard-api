@@ -1,11 +1,11 @@
 (ns portcard-api.interface.database.user-profiles-icons-repository
-  (:require [portcard-api.domain.base :as base-model]
-            [portcard-api.domain.users :as user-model]
-            [portcard-api.interface.database.utils :as utils]
-            [clojure.spec.alpha :as s]
+  (:require [clojure.spec.alpha :as s]
             [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
             [orchestra.spec.test :as st]
+            [portcard-api.domain.base :as base-model]
+            [portcard-api.domain.users :as user-model]
+            [portcard-api.interface.database.utils :as utils]
             [taoensso.timbre :as timbre]))
 
 ;; define protocol

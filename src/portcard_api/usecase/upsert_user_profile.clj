@@ -6,7 +6,7 @@
             [portcard-api.interface.database.user-roles-repository :as user-roles-repository]
             [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-            [portcard-api.util :refer [err->> border-error remove-empty]]))
+            [portcard-api.util :refer [border-error err->> remove-empty]]))
 
 (defn user-already-exist? [user]
   (not (empty? user)))

@@ -17,7 +17,10 @@
         ;; gmail
         gmail-credential-file (env :gmail-credential-file)
         gmail-tokens-dir (env :gmail-tokens-dir)
-        gmail-host-addr (env :gmail-host-addr)]
+        gmail-host-addr (env :gmail-host-addr)
+        ;; google cloud storage
+        gcs-captures-bucket-name (env :gcs-captures-bucket-name)
+        gcs-icons-bucket-name  (env :gcs-icons-bucket-name)]
 
     (timbre/info "running in " running)
     (timbre/info "database-url" database-url)
@@ -32,4 +35,6 @@
      :firebase-database firebase-database
      :gmail-credential-file gmail-credential-file
      :gmail-tokens-dir gmail-tokens-dir
-     :gmail-host-addr gmail-host-addr}))
+     :gmail-host-addr gmail-host-addr
+     :gcs-captures-bucket-name gcs-captures-bucket-name
+     :gcs-icons-bucket-name  gcs-icons-bucket-name}))

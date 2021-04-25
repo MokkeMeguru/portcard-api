@@ -1,7 +1,7 @@
 (ns portcard-api.infrastructure.handler.contact
-  (:require [portcard-api.usecase.post-contact :as post-contact-usecase]
-            [clojure.spec.alpha :as s]
+  (:require [clojure.spec.alpha :as s]
             [clojure.walk :as w]
+            [portcard-api.usecase.post-contact :as post-contact-usecase]
             [taoensso.timbre :as timbre]))
 
 (s/def ::id-token string?)

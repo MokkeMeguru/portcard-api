@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.firebase.firebase
-  (:import (com.google.firebase FirebaseApp FirebaseOptions)
-           (com.google.firebase.database DatabaseReference FirebaseDatabase)
-           (com.google.auth.oauth2 GoogleCredentials)
-           (com.google.firebase.auth FirebaseAuth))
+  (:import (com.google.auth.oauth2 GoogleCredentials)
+           (com.google.firebase FirebaseApp FirebaseOptions)
+           (com.google.firebase.auth FirebaseAuth)
+           (com.google.firebase.database DatabaseReference FirebaseDatabase))
   (:require [integrant.core :as ig]
             [taoensso.timbre :as timbre]))
 

@@ -4,9 +4,9 @@
             [taoensso.timbre :as timbre])
   (:import [javax.sql DataSource]
            [net.ttddyy.dsproxy QueryInfo]
+           [net.ttddyy.dsproxy.listener QueryExecutionListener]
            [net.ttddyy.dsproxy.proxy ParameterSetOperation]
-           [net.ttddyy.dsproxy.support ProxyDataSource]
-           [net.ttddyy.dsproxy.listener QueryExecutionListener]))
+           [net.ttddyy.dsproxy.support ProxyDataSource]))
 
 (defrecord Boundary [spec])
 
