@@ -1,0 +1,36 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+    ["-c", 
+    "docker build --tag=gcr.io/portcard/portcard-api --file=cloudbuild.Dockerfile  \
+    --build-arg GSM_SECRET=$$GSM_SECRET \
+    --build-arg GSM_CREDENTIALS=$$GSM_CREDENTIALS \
+    --build-arg GSM_PROFILES=$$GSM_PROFILES
+    --build-arg GSM_TOKENS=$$GSM_TOKENS ."]
+  secretEnv:
+    - GSM_SECRET
+    - GSM_CREDENTIALS
+    - GSM_PROFILES
+    - GSM_TOKENS
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/portcard/portcard-api']
+# # Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'portcard-api', '--image', 'gcr.io/portcard/portcard-api', '--region', 'asia-northeast1', '--platform', 'managed']
+  
+images:
+  - gcr.io/portcard-api
+availableSecrets:
+  secretManager:
+    - versionName: projects/portcard/secrets/secret/versions/1
+      env: GSM_SECRET
+    - versionName: projects/portcard/secrets/credentials/versions/1
+      env: GSM_CREDENTIALS
+    - versionName: projects/portcard/secrets/profiles/versions/1
+      env: GSM_PROFILES
+    - versionName: projects/portcard/secrets/tokens/versions/1
+      env: GSM_TOKENS

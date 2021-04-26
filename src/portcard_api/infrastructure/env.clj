@@ -2,7 +2,8 @@
   (:require [environ.core :refer [env]]
             [integrant.core :as ig]
             [orchestra.spec.test :as st]
-            [taoensso.timbre :as timbre])
+            [taoensso.timbre :as timbre]
+            [clojure.java.io :as io])
   (:import (com.google.auth.oauth2 GoogleCredentials)))
 
 (defmethod ig/init-key ::env [_ _]
@@ -11,7 +12,7 @@
         running (env :env)
 
         ;; firebase
-        firebase-credentials-path (env :google-application-credentials)
+        ;; firebase-credentials-path (env :google-application-credentials)
         firebase-credentials (GoogleCredentials/getApplicationDefault)
         firebase-database (env :firebase-database)
         ;; gmail
@@ -24,7 +25,9 @@
 
     (timbre/info "running in " running)
     (timbre/info "database-url" database-url)
-    (timbre/info "firebase-secret-json path" firebase-credentials-path)
+    (timbre/info "gmail-tokens-dir" gmail-tokens-dir)
+    (timbre/info "gmail-tokens-dir" gmail-tokens-dir (-> gmail-tokens-dir io/as-file))
+    (timbre/info "gmail-tokens-dir" gmail-tokens-dir (-> gmail-tokens-dir io/as-file .exists))
     (when (.contains ["test" "dev"] running) (timbre/info "orchestra instrument is active") (st/instrument))
     {:database-url database-url
      :running running

@@ -82,17 +82,17 @@
 
             [lein-nsorg "0.3.0"]]
   :profiles {:dev [:profiles/dev :project/dev]
-             :project/dev {}
+             :project/dev {:jvm-opts ["-Xmx412m"]}
              :profiles/dev {}
 
              :cloud [:profiles/cloud
                      :project/cloud]
-             :project/cloud {}
+             :project/cloud {:jvm-opts ["-Xmx412m"]}
              :profiles/cloud {}
 
              :uberjar [:profiles/uberjar :project/uberjar]
              :project/uberjar  {:aot :all
-                                :jvm-opts ["-Dclojure.compiler.direct-linking=true" "-Xmx512m"]}}
+                                :jvm-opts ["-Dclojure.compiler.direct-linking=true" "-Xmx412m"]}}
 
   :aliases {"lint" ["do"
                     ["ns-sort"]
