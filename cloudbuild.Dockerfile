@@ -35,4 +35,4 @@ COPY --from=builder /app/resources $APP_HOME/resources
 COPY --from=builder /app/.lein-env $APP_HOME/.lein-env
 ENV CONFIG_FILE=cloud_config.edn
 COPY --from=builder /app/target/*-standalone.jar $APP_HOME/app.jar
-CMD ["java", "-Xmx400m", "-Xms400m", "-jar", "app.jar"]
+CMD ["java", "-Xmx512m", "-Xms512m", "-jar", "app.jar"]
