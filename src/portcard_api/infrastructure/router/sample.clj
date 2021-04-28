@@ -1,8 +1,8 @@
 (ns portcard-api.infrastructure.router.sample
-  (:require [reitit.ring.middleware.multipart :as multipart]
-            [clojure.java.io :as io]
-            [taoensso.timbre :as timbre]
-            [clojure.walk :as w]))
+  (:require [clojure.java.io :as io]
+            [clojure.walk :as w]
+            [reitit.ring.middleware.multipart :as multipart]
+            [taoensso.timbre :as timbre]))
 
 (defn sample-router [env]
   ["/samples"

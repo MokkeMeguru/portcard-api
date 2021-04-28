@@ -5,5 +5,3 @@
 (defn -main
   [& args]
   (core/start "cmd/migrate/config.edn"))
-
-(-main)

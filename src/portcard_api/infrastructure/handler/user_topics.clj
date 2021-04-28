@@ -1,18 +1,18 @@
 (ns portcard-api.infrastructure.handler.user-topics
-  (:require [clojure.spec.alpha :as s]
-            [portcard-api.usecase.get-user-topics :as get-user-topics-usecase]
-            [portcard-api.usecase.get-latest-user-topics :as get-latest-user-topics-usecase]
-            [portcard-api.usecase.post-user-topic :as post-user-topic-usecase]
-            [portcard-api.usecase.get-user-topic-capture :as get-user-topic-capture-usecase]
-            [portcard-api.usecase.delete-user-topic :as delete-user-topic-usecase]
-            [reitit.ring.middleware.multipart :as multipart]
-            [spec-tools.data-spec :as ds]
+  (:require [clojure.java.io :as io]
+            [clojure.spec.alpha :as s]
             [clojure.walk :as w]
-            [portcard-api.interface.database.utils :as utils]
-            [portcard-api.util :as util]
+            [portcard-api.domain.errors :as errors]
             [portcard-api.domain.user-roles :as user-roles-model]
-            [clojure.java.io :as io]
-            [portcard-api.domain.errors :as errors]))
+            [portcard-api.interface.database.utils :as utils]
+            [portcard-api.usecase.delete-user-topic :as delete-user-topic-usecase]
+            [portcard-api.usecase.get-latest-user-topics :as get-latest-user-topics-usecase]
+            [portcard-api.usecase.get-user-topic-capture :as get-user-topic-capture-usecase]
+            [portcard-api.usecase.get-user-topics :as get-user-topics-usecase]
+            [portcard-api.usecase.post-user-topic :as post-user-topic-usecase]
+            [portcard-api.util :as util]
+            [reitit.ring.middleware.multipart :as multipart]
+            [spec-tools.data-spec :as ds]))
 
 ;; from int path
 ;; take int path
@@ -106,10 +106,12 @@
    :handler (fn [{:keys [parameters headers db image-db]}]
               (let [{{:keys [file title category description link]} :multipart} parameters
                     id-token (-> headers w/keywordize-keys :authorization)
-                    topic-image (:tempfile file)
+                    topic-image-stream (io/input-stream (:tempfile file))
                     topic (->topic title category description link)
-                    [result err] (post-user-topic-usecase/post-user-topic id-token topic topic-image db image-db)]
-                {:status 201}))})
+                    [result err] (post-user-topic-usecase/post-user-topic id-token topic topic-image-stream db image-db)]
+                (cond
+                  err err
+                  :else {:status 201})))})
 
 ;; uid string path
 
@@ -149,12 +151,9 @@
    :handler (fn [{:keys [parameters db image-db]}]
               (let [{{:keys [user-id topic-id image-blob]} :path} parameters
                     topic-id (java.util.UUID/fromString topic-id)
-                    [{{:keys [file]} :image} err] (get-user-topic-capture-usecase/get-user-topic-capture user-id topic-id image-blob db image-db)
-                    [input-stream input-stream-err] (try [(io/input-stream file) nil]
-                                                         (catch Exception e [nil (errors/unknown-error (.getMessage e))]))]
+                    [{{:keys [image-stream]} :image} err] (get-user-topic-capture-usecase/get-user-topic-capture user-id topic-id image-blob db image-db)]
                 (cond
                   (not (nil? err)) err
-                  (not (nil? input-stream-err)) input-stream-err
                   :else {:status 200
                          :headers {"Content-type" "image/png"}
-                         :body (io/input-stream file)})))})
+                         :body image-stream})))})

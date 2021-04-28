@@ -1,12 +1,12 @@
 (ns portcard-api.interface.database.user-role-links-repository
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.test.alpha :as stest]
-            [portcard-api.domain.user-roles :as user-roles-model]
-            [orchestra.spec.test :as st]
             [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
-            [portcard-api.interface.database.utils :as utils]
-            [portcard-api.domain.base :as base-model]))
+            [orchestra.spec.test :as st]
+            [portcard-api.domain.base :as base-model]
+            [portcard-api.domain.user-roles :as user-roles-model]
+            [portcard-api.interface.database.utils :as utils]))
 
 ;; define protocol
 (defprotocol UserRoleLinks

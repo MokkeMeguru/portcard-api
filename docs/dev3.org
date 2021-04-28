@@ -1,0 +1,9 @@
+#+TITLE: プロジェクト構造周りの話
+* infrastructure の spec の話
+- spec は spec
+
+  domain layer に記述する
+
+- ビズネスロジックとは関係ない
+
+  infrastructure 層にペッする

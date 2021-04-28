@@ -1,9 +1,9 @@
 (ns portcard-api.interface.image-processor.core
-  (:import [java.awt.image AffineTransformOp BufferedImage]
-           [java.io ByteArrayOutputStream FileInputStream File]
-           java.awt.geom.AffineTransform
-           javax.imageio.ImageIO
-           java.net.URLEncoder)
+  (:import java.awt.geom.AffineTransform
+           [java.awt.image AffineTransformOp BufferedImage]
+           [java.io ByteArrayOutputStream File FileInputStream]
+           java.net.URLEncoder
+           javax.imageio.ImageIO)
   (:require [clojure.java.io :as io]))
 
 (defn scale
@@ -39,14 +39,14 @@
       image)))
 
 (defn ->icon
-  [^java.io.File source ^Integer icon-size]
+  [^java.io.InputStream source ^Integer icon-size]
   (-> source
       ImageIO/read
       center-crop-image
       (scale-image icon-size)))
 
 (defn ->climb-image
-  [^java.io.File source ^Integer max-size]
+  [^java.io.InputStream source ^Integer max-size]
   (let [res (-> source
                 ImageIO/read
                 (climb-image max-size))]

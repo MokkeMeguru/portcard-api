@@ -1,5 +1,17 @@
 version: "3"
 services:
+  gcs_db:
+    image: "gcr.io/cloudsql-docker/gce-proxy:1.21.0"
+    command:
+      [
+        "/cloud_sql_proxy",
+        "-instances=${CLOUDSQL_INSTANCE_NAME}=tcp:0.0.0.0:3306",
+        "-credential_file=/config/secret.json",
+      ]
+    volumes:
+      - "./resources/secret.json:/config/secret.json"
+    ports:
+      - "3306:3306"
   dev_db:
     build: containers/postgres
     ports:
@@ -23,6 +35,8 @@ services:
       - "lib_data:/root/.m2"
     depends_on:
       - dev_db
+      - gcs_db
+
 volumes:
   dev_db_volume:
   lib_data:

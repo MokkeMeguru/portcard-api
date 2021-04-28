@@ -1,10 +1,10 @@
 (ns portcard-api.core
   (:gen-class)
-  (:require [environ.core :refer [env]]
-            [taoensso.timbre :as timbre]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
+            [environ.core :refer [env]]
             [integrant.core :as ig]
-            [integrant.repl :as igr]))
+            [integrant.repl :as igr]
+            [taoensso.timbre :as timbre]))
 
 (def config-file
   (if-let [config-file (env :config-file)]
@@ -36,7 +36,6 @@
 (defn -main
   [& args]
   (timbre/set-level! :info)
-  (println "Hello, World!")
   (-> config-file
       load-config
       ig/init))

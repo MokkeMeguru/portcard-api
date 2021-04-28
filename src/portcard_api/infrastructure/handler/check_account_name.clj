@@ -1,6 +1,6 @@
 (ns portcard-api.infrastructure.handler.check-account-name
-  (:require [portcard-api.usecase.check-account-name :as check-account-name-usecase]
-            [portcard-api.infrastructure.openapi.users :as openapi-users]))
+  (:require [portcard-api.infrastructure.openapi.users :as openapi-users]
+            [portcard-api.usecase.check-account-name :as check-account-name-usecase]))
 
 (defn ->account-name-exist? [{:keys [user-exist]}]
   {:exist user-exist})

@@ -1,0 +1,14 @@
+#+TITLE: Commands
+
+* gmail credential
+#+begin_src shell
+export GOOGLE_APPLICATION_CREDENTIALS="resources/secret.json"
+lein run portcard-api.cmd.gmail-credential.core
+#+end_src
+
+
+* migrate
+#+begin_src shell
+lein run portcard-api.cmd.migrate.core
+#+end_src
+

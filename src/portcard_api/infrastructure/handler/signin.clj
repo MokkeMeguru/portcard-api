@@ -1,7 +1,7 @@
 (ns portcard-api.infrastructure.handler.signin
   (:require [clojure.walk :as w]
-            [portcard-api.usecase.signin :as signin-usecase]
-            [portcard-api.infrastructure.openapi.users :as openapi-users]))
+            [portcard-api.infrastructure.openapi.users :as openapi-users]
+            [portcard-api.usecase.signin :as signin-usecase]))
 
 (defn ->uname [result]
   {:uname (-> result :user :uname)})

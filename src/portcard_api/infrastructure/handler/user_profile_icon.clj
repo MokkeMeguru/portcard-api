@@ -1,10 +1,10 @@
 (ns portcard-api.infrastructure.handler.user-profile-icon
-  (:require [reitit.ring.middleware.multipart :as multipart]
-            [portcard-api.usecase.save-user-profile-icon :as save-user-profile-icon-usecase]
-            [portcard-api.usecase.get-user-icon :as get-user-icon-usecase]
-            [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
+  (:require [clojure.java.io :as io]
             [clojure.walk :as w]
-            [clojure.java.io :as io]))
+            [portcard-api.infrastructure.openapi.user-profile :as openapi-user-profile]
+            [portcard-api.usecase.get-user-icon :as get-user-icon-usecase]
+            [portcard-api.usecase.save-user-profile-icon :as save-user-profile-icon-usecase]
+            [reitit.ring.middleware.multipart :as multipart]))
 
 (def get-user-profile-icon
   {:summary "get user icon"
@@ -12,12 +12,11 @@
    :handler (fn [{:keys [parameters db image-db]}]
               (let [icon-blob (-> parameters :path :icon-blob)
                     uname (-> parameters :path :user-id)
-                    [{{:keys [file]} :icon} err]
-                    (get-user-icon-usecase/get-user-icon uname icon-blob db image-db)]
+                    [{{:keys [image-stream]} :icon} err] (get-user-icon-usecase/get-user-icon uname icon-blob db image-db)]
                 (if (nil? err)
                   {:status 200
                    :headers {"Content-type" "image/png"}
-                   :body (io/input-stream file)}
+                   :body image-stream}
                   err)))})
 
 (def post-user-profile-icon
@@ -30,10 +29,9 @@
    :handler (fn [{:keys [parameters db image-db headers]}]
               (let [{{:keys [file]} :multipart} parameters
                     id-token (-> headers w/keywordize-keys :authorization)
-                    fin (:tempfile file)
                     [{:keys [icon_blob]} err]
                     (save-user-profile-icon-usecase/save-user-profile-icon
-                     {:icon-image (:tempfile file)
+                     {:icon-image-stream (io/input-stream (:tempfile file))
                       :image-db image-db
                       :db db
                       :id-token id-token})]

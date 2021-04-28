@@ -1,12 +1,12 @@
 (ns portcard-api.interface.database.user-roles-repository
-  (:require [portcard-api.interface.database.utils :as utils]
+  (:require [clojure.spec.alpha :as s]
             [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
-            [clojure.spec.alpha :as s]
+            [orchestra.spec.test :as st]
+            [portcard-api.domain.base :as base-model]
             [portcard-api.domain.user-roles :as user-roles-model]
             [portcard-api.domain.users :as user-model]
-            [portcard-api.domain.base :as base-model]
-            [orchestra.spec.test :as st]))
+            [portcard-api.interface.database.utils :as utils]))
 
 ;; define protocol
 (defprotocol UserRoles

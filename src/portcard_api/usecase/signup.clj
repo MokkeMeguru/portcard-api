@@ -1,10 +1,9 @@
 (ns portcard-api.usecase.signup
-  (:require
-   [portcard-api.util :refer [err->> border-error]]
-   [portcard-api.domain.errors :as errors]
-   [portcard-api.interface.database.users-repository :as users-repository]
-   [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
-   [clojure.spec.alpha :as s]))
+  (:require [clojure.spec.alpha :as s]
+            [portcard-api.domain.errors :as errors]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.firebase.auth :refer [safe-decode-token]]
+            [portcard-api.util :refer [border-error err->>]]))
 
 (defn decode-id-token [{:keys [id-token] :as m}]
   (let [{:keys [result user-id cause]} (safe-decode-token id-token)]
@@ -18,9 +17,9 @@
                      :error-wrapper errors/database-error}
                     border-error)]
     (cond
-      (not (empty? err)) [nil err]
-      (not (empty? user))  [nil errors/duplicate-user-name]
-      :default [(assoc m :user user) nil])))
+      (some? err) [nil err]
+      (some? user)  [nil errors/duplicate-user-name]
+      :else [(assoc m :user user) nil])))
 
 (defn check-user-already-exist [{:keys [user-id db] :as m}]
   (let [[user err] (err->>
@@ -28,9 +27,9 @@
                      :error-wrapper errors/database-error}
                     border-error)]
     (cond
-      (not (empty? err)) [nil err]
-      (not (empty? user)) [nil errors/duplicate-account]
-      :default [m nil])))
+      (some? err) [nil err]
+      (some? user) [nil errors/duplicate-account]
+      :else [m nil])))
 
 (defn create-account [{:keys [uname user-id db] :as m}]
   (let [user {:uname uname
@@ -41,9 +40,9 @@
                        :error-wrapper errors/database-error}
                       border-error)]
     (cond
-      (not (empty? err)) [nil err]
+      (some? err) [nil err]
       (not= user-id (:uid user)) [nil errors/user-creation-error]
-      :default [(assoc m :user user) nil])))
+      :else [(assoc m :user user) nil])))
 
 (defn signup [uname id-token db]
   (err->>

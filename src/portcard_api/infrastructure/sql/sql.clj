@@ -1,13 +1,12 @@
 (ns portcard-api.infrastructure.sql.sql
-  (:require [integrant.core :as ig]
-            [hikari-cp.core :as hikari-cp]
+  (:require [hikari-cp.core :as hikari-cp]
+            [integrant.core :as ig]
             [taoensso.timbre :as timbre])
-  (:import
-   [javax.sql DataSource]
-   [net.ttddyy.dsproxy QueryInfo]
-   [net.ttddyy.dsproxy.proxy ParameterSetOperation]
-   [net.ttddyy.dsproxy.support ProxyDataSource]
-   [net.ttddyy.dsproxy.listener QueryExecutionListener]))
+  (:import [javax.sql DataSource]
+           [net.ttddyy.dsproxy QueryInfo]
+           [net.ttddyy.dsproxy.listener QueryExecutionListener]
+           [net.ttddyy.dsproxy.proxy ParameterSetOperation]
+           [net.ttddyy.dsproxy.support ProxyDataSource]))
 
 (defrecord Boundary [spec])
 
@@ -43,7 +42,8 @@
 (defmethod ig/init-key ::sql
   [_ {:keys [env]}]
   (let [datasource
-        (-> {:jdbc-url (:database-url env)}
+        (-> {:jdbc-url (:database-url env)
+             :maximum-pool-size 2}
             (hikari-cp/make-datasource)
             wrap-logger)]
     (timbre/info "setup connection pool ...")

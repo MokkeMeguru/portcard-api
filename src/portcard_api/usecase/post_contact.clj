@@ -1,12 +1,12 @@
 (ns portcard-api.usecase.post-contact
-  (:require [portcard-api.util :refer [err->> border-error rand-str]]
-            [portcard-api.interface.database.user-profiles-contacts-repository :as user-profiles-contacts-repository]
+  (:require [clojure.spec.alpha :as s]
             [portcard-api.domain.errors :as errors]
-            [clojure.spec.alpha :as s]
-            [portcard-api.interface.gmail.gmail :as gmail-repository]
-            [portcard-api.interface.database.users-repository :as users-repository]
             [portcard-api.interface.database.contacts-repository :as contacts-repository]
-            [portcard-api.interface.database.utils :as utils]))
+            [portcard-api.interface.database.user-profiles-contacts-repository :as user-profiles-contacts-repository]
+            [portcard-api.interface.database.users-repository :as users-repository]
+            [portcard-api.interface.database.utils :as utils]
+            [portcard-api.interface.gmail.gmail :as gmail-repository]
+            [portcard-api.util :refer [border-error err->> rand-str]]))
 
 (defn ->message [display-name subject from-name from body-text]
   (format "%s 様

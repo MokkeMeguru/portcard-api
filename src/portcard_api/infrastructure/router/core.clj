@@ -1,37 +1,29 @@
 (ns portcard-api.infrastructure.router.core
-  (:require
-   [reitit.ring :as ring]
-   [reitit.core :as reitit]
-   [reitit.coercion.spec]
-
-   [reitit.swagger :as swagger]
-   [reitit.swagger-ui :as swagger-ui]
-   [reitit.ring.coercion :as coercion]
-
-   [reitit.ring.middleware.muuntaja :as muuntaja]
-   [reitit.ring.middleware.exception :as exception]
-   [reitit.ring.middleware.multipart :as multipart]
-   [reitit.ring.middleware.parameters :as parameters]
-   [reitit.ring.middleware.dev :as dev]
-   [reitit.ring.spec :as spec]
-
-   [spec-tools.spell :as spell]
-   [muuntaja.core :as m]
-
-   [clojure.java.io :as io]
-
-   [ring.logger :refer [wrap-with-logger]]
-   [integrant.core :as ig]
-   [taoensso.timbre :as timbre]
-
-   [reitit.dev.pretty :as pretty]
-
-   [portcard-api.infrastructure.router.sample :refer [sample-router]]
-   [portcard-api.infrastructure.router.registration :refer [registration-router]]
-   [portcard-api.infrastructure.router.user-profile :refer [user-profile-router]]
-   [portcard-api.infrastructure.router.user-topics :refer [user-topics-router]]
-   [portcard-api.infrastructure.router.contact :refer [contact-router]]
-   [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db wrap-image-db wrap-gmail-service]]))
+  (:require [clojure.java.io :as io]
+            [integrant.core :as ig]
+            [muuntaja.core :as m]
+            [portcard-api.infrastructure.router.contact :refer [contact-router]]
+            [portcard-api.infrastructure.router.registration :refer [registration-router]]
+            [portcard-api.infrastructure.router.sample :refer [sample-router]]
+            [portcard-api.infrastructure.router.user-profile :refer [user-profile-router]]
+            [portcard-api.infrastructure.router.user-topics :refer [user-topics-router]]
+            [portcard-api.infrastructure.router.utils :refer [my-wrap-cors wrap-db wrap-gmail-service wrap-image-db]]
+            [reitit.coercion.spec]
+            [reitit.core :as reitit]
+            [reitit.dev.pretty :as pretty]
+            [reitit.ring :as ring]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.dev :as dev]
+            [reitit.ring.middleware.exception :as exception]
+            [reitit.ring.middleware.multipart :as multipart]
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.ring.middleware.parameters :as parameters]
+            [reitit.ring.spec :as spec]
+            [reitit.swagger :as swagger]
+            [reitit.swagger-ui :as swagger-ui]
+            [ring.logger :refer [wrap-with-logger]]
+            [spec-tools.spell :as spell]
+            [taoensso.timbre :as timbre]))
 
 (defn app [env db image-db gmail-service]
   (ring/ring-handler

@@ -1,6 +1,6 @@
 (ns portcard-api.infrastructure.router.user-topics
   (:require [portcard-api.infrastructure.handler.user-topics
-             :refer [post-user-topic get-user-topics delete-user-topic get-user-topics-latest get-user-topic-capture]]))
+             :refer [delete-user-topic get-user-topic-capture get-user-topics get-user-topics-latest post-user-topic]]))
 
 (defn user-topics-router [env]
   ["/user-topics"
