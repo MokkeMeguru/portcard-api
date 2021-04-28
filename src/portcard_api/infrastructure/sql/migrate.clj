@@ -50,7 +50,7 @@
         ;; log (do (init-file! migration-log)
         ;;         (string/split-lines (slurp migration-log)))
         ]
-    (timbre/info "load migration file: " migration-log)
+    ;; (timbre/info "load migration file: " migration-log)
     (timbre/info "new migration exists?" new-migration)
     (if new-migration
       (migrate! :up database-url migration-folder migration-log)

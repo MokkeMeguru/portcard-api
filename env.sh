@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-# HOW TO USE; source env.sh
-SECRET_ENV=.env
+# 1. compile the code and generate a pom.xml
+lein do compile :all, pom
 
-export GOOGLE_APPLICATION_CREDENTIALS=resources/secret.json
+# 2. containerize with jib
+mvn compile jib:build
 
-if test -f "$SECRET_ENV"; then
-    source "$SECRET_ENV"
-fi

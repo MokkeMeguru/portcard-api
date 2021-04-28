@@ -77,7 +77,7 @@
             [lein-exec "0.3.7"]
             [lein-pprint "1.3.2"]
             [ns-sort "1.0.0"]
-            [lein-cljfmt "0.7.0"]
+           [lein-cljfmt "0.7.0"]
             [lein-ancient "0.7.0"]
 
             [lein-nsorg "0.3.0"]]
@@ -90,7 +90,7 @@
              :project/cloud {:jvm-opts ["-Xmx412m"]}
              :profiles/cloud {}
 
-             :uberjar [:profiles/uberjar :project/uberjar]
+             :uberjar [:profiles/cloud :project/uberjar]
              :project/uberjar  {:aot :all
                                 :jvm-opts ["-Dclojure.compiler.direct-linking=true" "-Xmx412m"]}}
 

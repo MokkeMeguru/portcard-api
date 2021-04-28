@@ -42,7 +42,8 @@
 (defmethod ig/init-key ::sql
   [_ {:keys [env]}]
   (let [datasource
-        (-> {:jdbc-url (:database-url env)}
+        (-> {:jdbc-url (:database-url env)
+             :maximum-pool-size 2}
             (hikari-cp/make-datasource)
             wrap-logger)]
     (timbre/info "setup connection pool ...")
