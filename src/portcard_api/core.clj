@@ -36,7 +36,6 @@
 (defn -main
   [& args]
   (timbre/set-level! :info)
-  (println "Hello, World!")
   (-> config-file
       load-config
       ig/init))

@@ -22,7 +22,4 @@ gpg --passphrase-fd 0 --decrypt --batch --no-secmem-warning resources/tokens.tar
 
 tar -zxvf resources/tokens.tar.gz -C resources
 
-ls -la resources
-
-lein with-profile cloud run
-# gcloud builds submit --tag gcr.io/portcard/portcard-api -f cloudbuild.Dockerfile
+lein with-profile cloud uberjar
